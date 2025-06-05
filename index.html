@@ -543,7 +543,6 @@
                 return;
             }
             
-            const apiKey = 'AIzaSyBR7ArO3cRNRSibA8L3spSwT-imu6hz05M';
             const url = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${sheetName}?dateTimeRenderOption=FORMATTED_STRING&majorDimension=ROWS&key=${apiKey}`;
             
             fetch(url)
