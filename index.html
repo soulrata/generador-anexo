@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador de Anexos</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #44589b;
+            --accent-color: #232d4f;
+            --light-color: #ecf0f1;
+            --dark-color: #34495e;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            padding-top: 60px;
+        }
+        
+        .app-header {
+            background-color: var(--primary-color);
+            color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        
+        .nav-link {
+            color: rgba(255, 255, 255, 0.85) !important;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            color: white !important;
+            transform: translateY(-2px);
+        }
+        
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .anexo-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .anexo-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .anexo-header {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .anexo-content {
+            padding: 25px;
+        }
+        
+        .btn-anexo {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-weight: 600;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-anexo:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(52, 152, 219, 0.3);
+        }
+        
+        .btn-anexo i {
+            font-size: 1.1em;
+        }
+        
+        .section-title {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 10px;
+            margin-top: 30px;
+            font-weight: 700;
+        }
+        
+        .counter-badge {
+            background-color: var(--accent-color);
+            color: white;
+            border-radius: 20px;
+            padding: 5px 15px;
+            font-weight: 700;
+            font-size: 1.1em;
+            display: inline-block;
+            margin-left: 10px;
+        }
+        
+        .input-group {
+            max-width: 500px;
+            margin: 30px auto;
+        }
+        
+        .id-input {
+            border: 2px solid var(--secondary-color);
+            border-right: none;
+            font-weight: 500;
+        }
+        
+        .id-btn {
+            background-color: var(--secondary-color);
+            color: white;
+            font-weight: 600;
+            border: none;
+        }
+        
+        .id-btn:hover {
+            background-color: #2980b9;
+        }
+        
+        .anexo-title {
+            text-align: center;
+            font-weight: 700;
+            margin: 10px 0 20px;
+            color: var(--primary-color);
+        }
+        
+        .anexo-subtitle {
+            text-align: right;
+            font-weight: 700;
+            color: var(--dark-color);
+            margin-bottom: 5px;
+        }
+        
+        .instructions {
+            background-color: #e3f2fd;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-left: 4px solid var(--secondary-color);
+        }
+        
+        .instructions h3 {
+            color: var(--primary-color);
+            margin-top: 0;
+        }
+        
+        .instructions ol {
+            padding-left: 20px;
+        }
+        
+        .instructions li {
+            margin-bottom: 10px;
+        }
+        
+        .tab-content {
+            /* padding: 20px 0; */
+        }
+        
+        .nav-tabs .nav-link {
+            color: var(--dark-color) !important;
+            font-weight: 600;
+            /* padding: 12px 25px; */
+        }
+        
+        .nav-tabs .nav-link.active {
+            color: var(--secondary-color) !important;
+            border-bottom: 3px solid var(--secondary-color);
+        }
+        
+        .loading {
+            display: flex;
+            justify-content: center;
+            padding: 30px;
+        }
+        
+        .spinner-border {
+            width: 3rem;
+            height: 3rem;
+            color: var(--secondary-color);
+        }
+        
+        footer {
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+            font-size: 0.9em;
+        }
+        
+        /* ESTILOS DE TABLA ACTUALIZADOS */
+        table {
+            font-family: Arial, sans-serif;
+            border-collapse: collapse;
+            width: 550px !important;
+            max-width: auto !important;
+            font-size: smaller;
+            /* margin-bottom: 10px; */
+        }
+        
+        td {
+            border: 1px solid black;
+            color: black !important;
+            text-align: center;
+            /* padding: 5px; */
+        }
+        
+        th {
+            background-color: silver !important;
+            border: 1px solid black;
+            color: black !important;
+            text-align: center;
+            /* padding: 5px; */
+        }
+        
+        thead {
+            border-bottom: 1px solid black !important;
+        }
+        
+        td.left-align {
+            text-align: left !important;
+            font-size: xx-small !important;
+        }
+        
+        td.left-align-sm {
+            text-align: left !important;
+            font-size: x-small !important;
+        }
+        
+        td.motivo {
+            text-align: left !important;
+            font-size: x-small !important;
+        }
+        
+        /* @media (max-width: 768px) {
+            .anexo-content {
+                padding: 15px;
+                overflow-x: auto;
+            }
+            
+            table {
+                font-size: 10px;
+            }
+            
+            .btn-anexo {
+                padding: 8px 15px;
+                font-size: 0.9em;
+            }
+            
+            td, th {
+                padding: 5px;
+            }
+        } */
+    </style>
+</head>
+<body>
+    <!-- Header - Menu Nav -->
+    <header class="app-header fixed-top">
+        <nav class="navbar navbar-expand-lg">
+            <div class="container">
+                <a class="navbar-brand" href="#">
+                    <i class="fas fa-file-contract me-2"></i>Generador de Anexos
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon text-white">☰</span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#"><i class="fas fa-home me-1"></i> Inicio</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><i class="fas fa-question-circle me-1"></i> Ayuda</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><i class="fas fa-cog me-1"></i> Configuración</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="main-container">
+        <h1 class="text-center mb-4"><i class="fas fa-file-alt me-2"></i>Generador de Anexos</h1>
+        
+        <div class="instructions">
+            <h3><i class="fas fa-info-circle me-2"></i>Instrucciones de uso</h3>
+            <ol>
+                <li>Ingresa el ID de la hoja de cálculo de Google Sheets en el campo de abajo</li>
+                <li>Haz clic en "Cargar Datos" para obtener la información</li>
+                <li>Navega entre los diferentes anexos usando las pestañas</li>
+                <li>Utiliza el botón "Copiar" para copiar el contenido del anexo al portapapeles</li>
+            </ol>
+        </div>
+        
+        <div class="input-group">
+            <input type="text" class="form-control form-control-lg id-input" id="spreadsheetId" placeholder="Ingresa el ID de Google Sheets" value="...">
+            <button class="btn btn-lg id-btn" id="loadDataBtn">
+                <i class="fas fa-download me-2"></i>Cargar Datos
+            </button>
+        </div>
+        
+        <ul class="nav nav-tabs" id="anexoTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="anexo-i-tab" data-bs-toggle="tab" data-bs-target="#anexo-i" type="button">
+                    <i class="fas fa-list-ol me-2"></i>Anexo I
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="anexo-ii-tab" data-bs-toggle="tab" data-bs-target="#anexo-ii" type="button">
+                    <i class="fas fa-user-minus me-2"></i>Anexo II
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="anexo-iii-tab" data-bs-toggle="tab" data-bs-target="#anexo-iii" type="button">
+                    <i class="fas fa-user-times me-2"></i>Anexo III
+                </button>
+            </li>
+        </ul>
+        
+        <div class="tab-content" id="anexoTabContent">
+            <!-- Anexo I -->
+            <div class="tab-pane fade show active" id="anexo-i" role="tabpanel">
+                <div class="anexo-card">
+                    <div class="anexo-header">
+                        <h2 class="mb-0"><i class="fas fa-list-ol me-2"></i>Anexo I</h2>
+                        <button class="btn-anexo" onclick="copyToClipboard('miContenidoAnexoI')">
+                            <i class="far fa-copy"></i> Copiar Contenido
+                        </button>
+                    </div>
+                    <div class="anexo-content">
+                        <h3 class="text-center mb-4">
+                            Total: <span class="counter-badge" id="totalCounter">0</span>
+                        </h3>
+                        <div id="miContenidoAnexoI">
+                            <p class="anexo-subtitle" style="text-align: right;"><b>ANEXO I</b></p>
+                            <h4 class="anexo-title" style="text-align: center;">Nómina totalidad</h4>
+                            <div class="loading" id="loadingAnexoI">
+                                <div class="spinner-border" role="status">
+                                    <span class="visually-hidden">Cargando...</span>
+                                </div>
+                            </div>
+                            <div id="show-total"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Anexo II -->
+            <div class="tab-pane fade" id="anexo-ii" role="tabpanel">
+                <div class="anexo-card">
+                    <div class="anexo-header">
+                        <h2 class="mb-0"><i class="fas fa-user-minus me-2"></i>Anexo II</h2>
+                        <button class="btn-anexo" onclick="copyToClipboard('miContenidoAnexoII')">
+                            <i class="far fa-copy"></i> Copiar Contenido
+                        </button>
+                    </div>
+                    <div class="anexo-content">
+                        <h3 class="text-center mb-4">
+                            Admitidos: <span class="counter-badge" id="admitidosCounter">0</span>
+                        </h3>
+                        <div id="miContenidoAnexoII">
+                            <p class="anexo-subtitle" style="text-align: right;"><b>ANEXO II</b></p>
+                            <h4 class="anexo-title" style="text-align: center;">Admitidos</h4>
+                            <div class="loading" id="loadingAnexoII">
+                                <div class="spinner-border" role="status">
+                                    <span class="visually-hidden">Cargando...</span>
+                                </div>
+                            </div>
+                            <div id="show-admitidos"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Anexo III -->
+            <div class="tab-pane fade" id="anexo-iii" role="tabpanel">
+                <div class="anexo-card">
+                    <div class="anexo-header">
+                        <h2 class="mb-0"><i class="fas fa-user-times me-2"></i>Anexo III</h2>
+                        <button class="btn-anexo" onclick="copyToClipboard('miContenidoAnexoIII')">
+                            <i class="far fa-copy"></i> Copiar Contenido
+                        </button>
+                    </div>
+                    <div class="anexo-content">
+                        <h3 class="text-center mb-4">
+                            Excluidos: <span class="counter-badge" id="excluidosCounter">0</span>
+                        </h3>
+                        <div id="miContenidoAnexoIII">
+                            <p class="anexo-subtitle" style="text-align: right;"><b>ANEXO III</b></p>
+                            <h4 class="anexo-title" style="text-align: center;">Excluidos</h4>
+                            <div class="loading" id="loadingAnexoIII">
+                                <div class="spinner-border" role="status">
+                                    <span class="visually-hidden">Cargando...</span>
+                                </div>
+                            </div>
+                            <div id="show-excluidos"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="container">
+            <p class="mb-0">Sistema de Generación de Anexos &copy; 2023 | Todos los derechos reservados</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <script>
+        // Función para copiar contenido al portapapeles
+        function copyToClipboard(containerId) {
+            const element = document.getElementById(containerId);
+            const range = document.createRange();
+            range.selectNode(element);
+            window.getSelection().removeAllRanges();
+            window.getSelection().addRange(range);
+            
+            try {
+                document.execCommand('copy');
+                alert('Contenido copiado al portapapeles');
+            } catch (err) {
+                alert('Error al copiar: ', err);
+            }
+            
+            window.getSelection().removeAllRanges();
+        }
+        
+        // Funciones de procesamiento de datos
+        function comprobarCantidades(datos) {
+            const limite = [];
+            let mismo = 1;
+
+            for (let i = 0; i < datos.length - 1; i++) {
+                if (datos[i].denominacion === datos[i + 1].denominacion) {
+                    if (datos[i].nivel === datos[i + 1].nivel) {
+                        mismo++;
+                    } else {
+                        limite.push(mismo);
+                        mismo = 1;
+                    }
+                } else {
+                    limite.push(mismo);
+                    mismo = 1;
+                }
+            }
+
+            limite.push(mismo);
+            return limite;
+        }
+
+        function comprobarMotivos(inicio, fin, datos) {
+            const motivos = [];
+            let mismo = 1;
+
+            for (let i = inicio; i < fin - 1; i++) {
+                if (datos[i].id_postulacion === datos[i + 1].id_postulacion) {
+                    mismo++;
+                } else {
+                    motivos.push(mismo);
+                    mismo = 1;
+                }
+            }
+
+            motivos.push(mismo);
+            return motivos;
+        }
+
+        function comprobarNIVELes(datos) {
+            const limite = [];
+            let mismo = 1;
+
+            for (let i = 0; i < datos.length - 1; i++) {
+                if (datos[i].nivel === datos[i + 1].nivel) {
+                    mismo++;
+                } else {
+                    limite.push(mismo);
+                    mismo = 1;
+                }
+            }
+            limite.push(mismo);
+            return limite;
+        }
+
+        function getJsonArrayFromData(data) {
+            if (!data || !data.length) return [];
+            
+            const result = [];
+            const headers = data[0];
+            const cols = headers.length;
+            let row = [];
+
+            for (let i = 1, l = data.length; i < l; i++) {
+                row = data[i];
+                const obj = {};
+                for (let col = 0; col < cols; col++) {
+                    obj[headers[col]] = row[col];
+                }
+                result.push(obj);
+            }
+            return result;
+        }
+        
+        // Función para cargar datos de Google Sheets
+        function loadSheetData(sheetName, callback) {
+            const spreadsheetId = document.getElementById('spreadsheetId').value;
+            if (!spreadsheetId) {
+                alert('Por favor ingresa un ID de hoja de cálculo');
+                return;
+            }
+            
+            const apiKey = 'AIzaSyBR7ArO3cRNRSibA8L3spSwT-imu6hz05M';
+            const url = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${sheetName}?dateTimeRenderOption=FORMATTED_STRING&majorDimension=ROWS&key=${apiKey}`;
+            
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        throw new Error(data.error.message);
+                    }
+                    callback(data.values);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert(`Error al cargar datos: ${error.message}`);
+                });
+        }
+        
+        // Funciones para generar cada anexo
+        function generarAnexoI() {
+            $('#loadingAnexoI').show();
+            $('#show-total').empty();
+            
+            loadSheetData('Post-A1', function(data) {
+                const datos = getJsonArrayFromData(data);
+                let html = '';
+                let inicio = 0;
+                const limite = comprobarCantidades(datos);
+                let total = 0;
+
+                for (let j = 0; j < limite.length; j++) {
+                    const fin = inicio + limite[j];
+                    total = fin;
+
+                    html += `<table align="center">`;
+                    html += `<thead>`;
+                    html += `<tr>`;
+                    html += `<th colspan="3">${datos[inicio].id_puesto}:: ${datos[inicio].denominacion}</th>`;
+                    html += `</tr>`;
+                    html += `<tr>`;
+                    html += `<th>Apellido</th>`;
+                    html += `<th>Nombre</th>`;
+                    html += `<th>CUIL</th>`;
+                    html += `</tr>`;
+                    html += `</thead>`;
+                    html += `<tbody>`;
+
+                    for (let i = inicio; i < fin; i++) {                    
+                        html += `<tr>`;
+                        html += `<td>${datos[i].apellido}</td>`;
+                        html += `<td>${datos[i].nombre}</td>`;
+                        html += `<td>${datos[i].cuil}</td>`;
+                        html += `</tr>`;
+
+                        inicio++;
+                    }
+
+                    html += `</tbody>`;
+                    html += `</table>`;
+                    html += `<br>`;
+                }
+
+                $('#totalCounter').text(total);
+                $('#show-total').html(html);
+                $('#loadingAnexoI').hide();
+            });
+        }
+        
+        function generarAnexoII() {
+            $('#loadingAnexoII').show();
+            $('#show-admitidos').empty();
+            
+            loadSheetData('Post-A1b', function(data) {
+                const datos = getJsonArrayFromData(data);
+                let html = '';
+                let inicio = 0;
+                const limite = comprobarCantidades(datos);
+                let total = 0;
+
+                for (let j = 0; j < limite.length; j++) {
+                    const fin = inicio + limite[j];
+                    total = fin;
+
+                    html += `<table align="center">`;
+                    html += `<thead>`;
+                    html += `<tr>`;
+                    html += `<th colspan="3">${datos[inicio].id_puesto}:: ${datos[inicio].denominacion}</th>`;
+                    html += `</tr>`;
+                    html += `<tr>`;
+                    html += `<th>Apellido</th>`;
+                    html += `<th>Nombre</th>`;
+                    html += `<th>CUIL</th>`;
+                    html += `</tr>`;
+                    html += `</thead>`;
+                    html += `<tbody>`;
+
+                    for (let i = inicio; i < fin; i++) {                    
+                        html += `<tr>`;
+                        html += `<td>${datos[i].apellido}</td>`;
+                        html += `<td>${datos[i].nombre}</td>`;
+                        html += `<td>${datos[i].cuil}</td>`;
+                        html += `</tr>`;
+
+                        inicio++;
+                    }
+
+                    html += `</tbody>`;
+                    html += `</table>`;
+                    html += `<br>`;
+                }
+
+                $('#admitidosCounter').text(total);
+                $('#show-admitidos').html(html);
+                $('#loadingAnexoII').hide();
+            });
+        }
+        
+        function generarAnexoIII() {
+            $('#loadingAnexoIII').show();
+            $('#show-excluidos').empty();
+            
+            loadSheetData('Post-A2', function(data) {
+                const datos = getJsonArrayFromData(data);
+                let html = '';
+                let inicio = 0;
+                const limite = comprobarCantidades(datos);
+                let excluidos = 0;
+
+                for (let j = 0; j < limite.length; j++) {
+                    const fin = inicio + limite[j];
+                    const motivos = comprobarMotivos(inicio, fin, datos);
+
+                    html += `<table align="center">`;
+                    html += `<thead>`;
+                    html += `<tr>`;
+                    html += `<th colspan="4">${datos[inicio].id_puesto}:: ${datos[inicio].denominacion}</th>`;
+                    html += `</tr>`;
+                    html += `<tr>`;
+                    html += `<th>Apellido</th>`;
+                    html += `<th>Nombre</th>`;
+                    html += `<th>CUIL</th>`;
+                    html += `<th>El Aspirante no certifica cumplir con los requisitos excluyentes, detallados a continuación:</th>`;
+                    html += `</tr>`;
+                    html += `</thead>`;
+                    html += `<tbody>`;
+
+                    for (let k = 0; k < motivos.length; k++) {
+                        html += `<tr>`;
+                        html += `<td>${datos[inicio].apellido}</td>`;
+                        html += `<td>${datos[inicio].nombre}</td>`;
+                        html += `<td>${datos[inicio].cuil}</td>`;
+                        excluidos++;
+
+                        html += `<td class="motivo">`;
+                        for (let i = 0; i < motivos[k]; i++) {
+                            html += `<p>• ${datos[inicio].motivos_exclusion}</p>`;
+                            inicio++;
+                        }
+
+                        html += `</td>`;
+                        html += `</tr>`;
+                    }
+                    html += `</tbody>`;
+                    html += `</table>`;
+                    html += `<br>`;
+                }
+
+                $('#excluidosCounter').text(excluidos);
+                $('#show-excluidos').html(html);
+                $('#loadingAnexoIII').hide();
+            });
+        }
+        
+        // Cargar datos cuando se hace clic en el botón
+        document.getElementById('loadDataBtn').addEventListener('click', function() {
+            generarAnexoI();
+            generarAnexoII();
+            generarAnexoIII();
+        });
+        
+        // Para propósitos de demostración, cargamos datos de muestra
+        document.addEventListener('DOMContentLoaded', function() {
+            // Esto es solo para la demostración - en producción no se cargarían datos automáticamente
+            generarAnexoI();
+            generarAnexoII();
+            generarAnexoIII();
+        });
+    </script>
+</body>
+</html>
