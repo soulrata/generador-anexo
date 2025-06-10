@@ -123,16 +123,7 @@
         }
         
         .input-group {
-            max-width: 500px;
             margin: 30px auto;
-        }
-        
-        .id-feedback {
-            font-size: 0.875rem;
-            color: #28a745;
-            text-align: center;
-            margin-top: 5px;
-            font-weight: 500;
         }
         
         .id-input {
@@ -322,7 +313,7 @@
         <div class="instructions">
             <h3><i class="fas fa-info-circle me-2"></i>Instrucciones de uso</h3>
             <ol>
-                <li>Ingresa el enlace completo de Google Sheets o solo el ID en el campo de abajo</li>
+                <li>Ingresa la URL completa de la hoja de cálculo de Google Sheets en el campo de abajo</li>
                 <li>Haz clic en "Cargar Datos" para obtener la información</li>
                 <li>Navega entre los diferentes anexos usando las pestañas</li>
                 <li>Utiliza el botón "Copiar" para copiar el contenido del anexo al portapapeles</li>
@@ -330,12 +321,11 @@
         </div>
         
         <div class="input-group">
-            <input type="text" class="form-control form-control-lg id-input" id="spreadsheetId" placeholder="Ingresa el enlace completo o ID de Google Sheets" value="1ZM2QbeN_pX2hLzamRKNQnGmeg18Zuo6ubxFx6G_r--E">
+            <input type="text" class="form-control form-control-lg id-input" id="spreadsheetUrl" placeholder="Ingresa la URL de Google Sheets" value="https://docs.google.com/spreadsheets/d/1NFrKgTm2jvqGeRe_C39uF2M0EFs3PqsExxoGrOQoIWQ/edit?gid=591996741#gid=591996741">
             <button class="btn btn-lg id-btn" id="loadDataBtn">
                 <i class="fas fa-download me-2"></i>Cargar Datos
             </button>
         </div>
-        <div id="idFeedback" class="id-feedback" style="display: none;"></div>
         
         <ul class="nav nav-tabs" id="anexoTabs" role="tablist">
             <li class="nav-item" role="presentation">
@@ -449,34 +439,8 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <!-- Cargador de variables de entorno -->
-    <script src="env-loader.js"></script>
     
     <script>
-        // Configuración de la API de Google Sheets
-        let apiKey = 'TU_API_KEY_AQUI'; // Valor por defecto
-        const envLoader = new EnvLoader();
-        
-        // Cargar variables de entorno al inicializar
-        async function initializeApp() {
-            try {
-                await envLoader.loadEnv();
-                const envApiKey = envLoader.get('GOOGLE_SHEETS_API_KEY');
-                
-                if (envApiKey && envApiKey !== 'TU_API_KEY_AQUI') {
-                    apiKey = envApiKey;
-                    console.log('✅ API Key cargada desde archivo .env');
-                } else {
-                    console.warn('⚠️ No se encontró API Key en .env, usando configuración por defecto');
-                    console.info('💡 Para configurar tu API Key:');
-                    console.info('1. Edita el archivo .env');
-                    console.info('2. Reemplaza GOOGLE_SHEETS_API_KEY=TU_API_KEY_AQUI con tu API key real');
-                }
-            } catch (error) {
-                console.error('Error al inicializar la aplicación:', error);
-            }
-        }
-        
         // Función para copiar contenido al portapapeles
         function copyToClipboard(containerId) {
             const element = document.getElementById(containerId);
@@ -570,48 +534,45 @@
             return result;
         }
         
-        // Función para extraer el ID de Google Sheets desde un enlace completo
-        function extractSpreadsheetId(input) {
-            // Si ya es solo un ID (no contiene https://), lo devolvemos tal como está
-            if (!input.includes('https://')) {
-                return input.trim();
-            }
+        // Función para extraer el ID de la hoja de cálculo de una URL de Google Sheets
+        function extractSpreadsheetId(url) {
+            if (!url) return null;
             
-            // Patrón para extraer el ID de diferentes formatos de enlace de Google Sheets
+            // Patrón para extraer el ID de diferentes formatos de URL de Google Sheets
             const patterns = [
-                /\/spreadsheets\/d\/([a-zA-Z0-9-_]+)/,  // Patrón estándar
-                /\/d\/([a-zA-Z0-9-_]+)/,                // Patrón alternativo
-                /id=([a-zA-Z0-9-_]+)/                   // Por si viene como parámetro
+                // Formato estándar: https://docs.google.com/spreadsheets/d/SPREADSHEET_ID/edit...
+                /\/spreadsheets\/d\/([a-zA-Z0-9-_]+)/,
+                // Formato de solo ID (si alguien pega solo el ID)
+                /^([a-zA-Z0-9-_]+)$/
             ];
             
             for (const pattern of patterns) {
-                const match = input.match(pattern);
-                if (match && match[1]) {
+                const match = url.match(pattern);
+                if (match) {
                     return match[1];
                 }
             }
             
-            // Si no se encuentra ningún patrón, devolver el input original
-            return input.trim();
+            return null;
         }
         
         // Función para cargar datos de Google Sheets
+        // Función para cargar datos de Google Sheets
         function loadSheetData(sheetName, callback) {
-            const userInput = document.getElementById('spreadsheetId').value;
-            if (!userInput) {
-                alert('Por favor ingresa un enlace de Google Sheets o un ID');
+            const spreadsheetUrl = document.getElementById('spreadsheetUrl').value;
+            if (!spreadsheetUrl) {
+                alert('Por favor ingresa una URL de hoja de cálculo');
                 return;
             }
             
-            // Extraer el ID del enlace o usar el input tal como está
-            const spreadsheetId = extractSpreadsheetId(userInput);
-            
+            // Extraer el ID de la URL
+            const spreadsheetId = extractSpreadsheetId(spreadsheetUrl);
             if (!spreadsheetId) {
-                alert('No se pudo extraer un ID válido del enlace proporcionado');
+                alert('URL de Google Sheets no válida. Por favor verifica la URL e intenta nuevamente.');
                 return;
             }
             
-            const url = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${sheetName}?dateTimeRenderOption=FORMATTED_STRING&majorDimension=ROWS&key=${apiKey}`;
+            const url = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${sheetName}?dateTimeRenderOption=FORMATTED_STRING&majorDimension=ROWS&key=AIzaSyBR7ArO3cRNRSibA8L3spSwT-imu6hz05M`;
             
             fetch(url)
                 .then(response => response.json())
@@ -632,7 +593,7 @@
             $('#loadingAnexoI').show();
             $('#show-total').empty();
             
-            loadSheetData('A1', function(data) {
+            loadSheetData('Anexo-I', function(data) {
                 const datos = getJsonArrayFromData(data);
                 let html = '';
                 let inicio = 0;
@@ -681,7 +642,7 @@
             $('#loadingAnexoII').show();
             $('#show-admitidos').empty();
             
-            loadSheetData('A2', function(data) {
+            loadSheetData('Anexo-II', function(data) {
                 const datos = getJsonArrayFromData(data);
                 let html = '';
                 let inicio = 0;
@@ -730,7 +691,7 @@
             $('#loadingAnexoIII').show();
             $('#show-excluidos').empty();
             
-            loadSheetData('A3', function(data) {
+            loadSheetData('Anexo-III', function(data) {
                 const datos = getJsonArrayFromData(data);
                 let html = '';
                 let inicio = 0;
@@ -784,39 +745,14 @@
         
         // Cargar datos cuando se hace clic en el botón
         document.getElementById('loadDataBtn').addEventListener('click', function() {
-            const userInput = document.getElementById('spreadsheetId').value;
-            const extractedId = extractSpreadsheetId(userInput);
-            const feedbackElement = document.getElementById('idFeedback');
-            
-            // Mostrar el ID extraído si es diferente al input original
-            if (userInput !== extractedId && userInput.includes('https://')) {
-                console.log('ID extraído del enlace:', extractedId);
-                
-                // Mostrar feedback visual
-                feedbackElement.innerHTML = `<i class="fas fa-check-circle me-1"></i>ID extraído exitosamente: ${extractedId}`;
-                feedbackElement.style.display = 'block';
-                
-                // Actualizar el campo con solo el ID después de un breve delay
-                setTimeout(() => {
-                    document.getElementById('spreadsheetId').value = extractedId;
-                    feedbackElement.style.display = 'none';
-                }, 2000);
-            } else {
-                feedbackElement.style.display = 'none';
-            }
-            
             generarAnexoI();
             generarAnexoII();
             generarAnexoIII();
         });
         
-        // Inicializar la aplicación cuando el DOM esté listo
-        document.addEventListener('DOMContentLoaded', async function() {
-            // Inicializar variables de entorno
-            await initializeApp();
-            
-            // Para propósitos de demostración, cargamos datos de muestra
-            // En producción no se cargarían datos automáticamente
+        // Para propósitos de demostración, cargamos datos de muestra
+        document.addEventListener('DOMContentLoaded', function() {
+            // Esto es solo para la demostración - en producción no se cargarían datos automáticamente
             generarAnexoI();
             generarAnexoII();
             generarAnexoIII();

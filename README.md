@@ -35,7 +35,7 @@ Sistema web para generar anexos automáticamente desde hojas de cálculo de Goog
 ## 📋 Uso
 
 1. **Abrir la aplicación:**
-   - Abre el archivo `GeneradorAnexo.html` en tu navegador web
+   - Abre el archivo `index.html` en tu navegador web
 
 2. **Cargar datos:**
    - Pega el enlace completo de Google Sheets en el campo de entrada
@@ -49,7 +49,7 @@ Sistema web para generar anexos automáticamente desde hojas de cálculo de Goog
 ## 🔧 Estructura de archivos
 
 ```
-├── GeneradorAnexo.html     # Aplicación principal
+├── index.html     # Aplicación principal
 ├── env-loader.js           # Cargador de variables de entorno
 ├── .env                    # Variables de entorno (no subir a git)
 ├── .env.example           # Plantilla de configuración
