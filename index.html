@@ -4,13 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Generador de Anexos</title>
-    
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
+      <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <style>
+      <style>
+        /* CSS COMPLETAMENTE PERSONALIZADO - SIN BOOTSTRAP */
+        /* Última actualización: 18/06/2025 - CSS Nativo */
+        
+        /* Reset CSS básico */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        /* Variables CSS */
         :root {
             --primary-color: #2c3e50;
             --secondary-color: #44589b;
@@ -19,40 +26,101 @@
             --dark-color: #34495e;
         }
         
+        /* Estilos globales */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f8f9fa;
-            padding-top: 60px;
+            color: #333;
+            line-height: 1.6;
+            padding-top: 70px;
         }
         
+        /* Utilidades de texto */
+        .text-center { text-align: center; }
+        .text-white { color: white; }
+        .visually-hidden {
+            position: absolute !important;
+            width: 1px !important;
+            height: 1px !important;
+            padding: 0 !important;
+            margin: -1px !important;
+            overflow: hidden !important;
+            clip: rect(0, 0, 0, 0) !important;
+            white-space: nowrap !important;
+            border: 0 !important;
+        }
+        
+        /* Utilidades de margen */
+        .mb-0 { margin-bottom: 0; }
+        .mb-4 { margin-bottom: 1.5rem; }
+        .me-1 { margin-right: 0.25rem; }
+        .me-2 { margin-right: 0.5rem; }
+        
+        /* Header personalizado */
         .app-header {
             background-color: var(--primary-color);
             color: white;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            height: 70px;
+        }
+        
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            height: 100%;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            width: 100%;
         }
         
         .navbar-brand {
             font-weight: 700;
             letter-spacing: 1px;
+            color: white;
+            text-decoration: none;
+            font-size: 1.25rem;
+        }
+        
+        .navbar-nav {
+            display: flex;
+            list-style: none;
+            gap: 20px;
         }
         
         .nav-link {
-            color: rgba(255, 255, 255, 0.85) !important;
+            color: rgba(255, 255, 255, 0.85);
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 4px;
             transition: all 0.3s ease;
             font-weight: 500;
         }
         
         .nav-link:hover, .nav-link.active {
-            color: white !important;
-            transform: translateY(-2px);
+            color: white;
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-1px);
         }
         
+        /* Contenedor principal */
         .main-container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
         }
         
+        /* Cards personalizadas */
         .anexo-card {
             background: white;
             border-radius: 10px;
@@ -79,8 +147,8 @@
         .anexo-content {
             padding: 25px;
         }
-        
-        .btn-anexo {
+          /* Botones personalizados */
+        .btn, .btn-anexo {
             background-color: var(--secondary-color);
             color: white;
             border: none;
@@ -88,29 +156,72 @@
             font-weight: 600;
             border-radius: 5px;
             transition: all 0.3s ease;
-            display: flex;
+            display: inline-flex;
             align-items: center;
             gap: 8px;
+            cursor: pointer;
+            text-decoration: none;
         }
         
-        .btn-anexo:hover {
+        .btn:hover, .btn-anexo:hover {
             background-color: #2980b9;
             transform: translateY(-2px);
             box-shadow: 0 4px 8px rgba(52, 152, 219, 0.3);
         }
         
-        .btn-anexo i {
-            font-size: 1.1em;
+        .btn:disabled {
+            background-color: #7f8c8d;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
         }
         
-        .section-title {
-            color: var(--primary-color);
-            border-bottom: 2px solid var(--secondary-color);
-            padding-bottom: 10px;
-            margin-top: 30px;
-            font-weight: 700;
+        .btn-lg {
+            padding: 12px 24px;
+            font-size: 1.1rem;
         }
         
+        .id-btn {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            border-radius: 0 5px 5px 0;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        
+        .id-btn:hover {
+            background-color: #2980b9;
+        }
+        
+        /* Formularios personalizados */
+        .form-control {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--secondary-color);
+            border-radius: 5px 0 0 5px;
+            font-size: 1rem;
+            font-weight: 500;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-control:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(35, 45, 79, 0.1);
+        }
+        
+        .input-group {
+            display: flex;
+            max-width: 600px;
+            margin: 30px auto;
+        }
+        
+        .input-group .form-control {
+            border-right: none;
+        }
+        
+        /* Badges y contadores */
         .counter-badge {
             background-color: var(--accent-color);
             color: white;
@@ -122,26 +233,112 @@
             margin-left: 10px;
         }
         
-        .input-group {
-            margin: 30px auto;
+        /* Instrucciones */
+        .instructions {
+            background-color: #e3f2fd;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-left: 4px solid var(--secondary-color);
         }
         
-        .id-input {
-            border: 2px solid var(--secondary-color);
-            border-right: none;
-            font-weight: 500;
+        .instructions h3 {
+            color: var(--primary-color);
+            margin-top: 0;
+            margin-bottom: 15px;
         }
         
-        .id-btn {
-            background-color: var(--secondary-color);
-            color: white;
-            font-weight: 600;
+        .instructions ol {
+            padding-left: 20px;
+        }
+        
+        .instructions li {
+            margin-bottom: 10px;
+        }
+        
+        /* Tabs personalizadas */
+        .nav-tabs {
+            display: flex;
+            border-bottom: 2px solid #dee2e6;
+            margin-bottom: 0;
+            list-style: none;
+            padding: 0;
+        }
+        
+        .nav-item {
+            margin-bottom: -2px;
+        }
+        
+        .nav-tabs .nav-link {
+            display: block;
+            padding: 12px 25px;
             border: none;
+            background: none;
+            color: var(--dark-color);
+            font-weight: 600;
+            text-decoration: none;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
         }
         
-        .id-btn:hover {
-            background-color: #2980b9;
+        .nav-tabs .nav-link:hover {
+            color: var(--secondary-color);
+            background-color: #f8f9fa;
         }
+        
+        .nav-tabs .nav-link.active {
+            color: var(--secondary-color);
+            border-bottom-color: var(--secondary-color);
+            background-color: white;
+        }
+        
+        .tab-content {
+            padding: 20px 0;
+        }
+        
+        .tab-pane {
+            display: none;
+        }
+        
+        .tab-pane.show.active {
+            display: block;
+        }
+        
+        /* Loading spinner */
+        .loading {
+            display: flex;
+            justify-content: center;
+            padding: 30px;
+        }
+        
+        .spinner-border {
+            width: 3rem;
+            height: 3rem;
+            border: 0.25em solid currentColor;
+            border-right-color: transparent;
+            border-radius: 50%;
+            animation: spinner-border 0.75s linear infinite;
+            color: var(--secondary-color);
+        }
+        
+        @keyframes spinner-border {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Estilos de títulos */
+        h1, h2, h3, h4, h5, h6 {
+            margin-top: 0;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            line-height: 1.2;
+            color: var(--dark-color);
+        }
+        
+        h1 { font-size: 2.5rem; }
+        h2 { font-size: 2rem; }
+        h3 { font-size: 1.75rem; }
+        h4 { font-size: 1.5rem; }
         
         .anexo-title {
             text-align: center;
@@ -157,54 +354,7 @@
             margin-bottom: 5px;
         }
         
-        .instructions {
-            background-color: #e3f2fd;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 30px;
-            border-left: 4px solid var(--secondary-color);
-        }
-        
-        .instructions h3 {
-            color: var(--primary-color);
-            margin-top: 0;
-        }
-        
-        .instructions ol {
-            padding-left: 20px;
-        }
-        
-        .instructions li {
-            margin-bottom: 10px;
-        }
-        
-        .tab-content {
-            /* padding: 20px 0; */
-        }
-        
-        .nav-tabs .nav-link {
-            color: var(--dark-color) !important;
-            font-weight: 600;
-            /* padding: 12px 25px; */
-        }
-        
-        .nav-tabs .nav-link.active {
-            color: var(--secondary-color) !important;
-            border-bottom: 3px solid var(--secondary-color);
-        }
-        
-        .loading {
-            display: flex;
-            justify-content: center;
-            padding: 30px;
-        }
-        
-        .spinner-border {
-            width: 3rem;
-            height: 3rem;
-            color: var(--secondary-color);
-        }
-        
+        /* Footer */
         footer {
             background-color: var(--primary-color);
             color: white;
@@ -212,35 +362,110 @@
             padding: 20px;
             margin-top: 40px;
             font-size: 0.9em;
-        }
-        
-        /* ESTILOS DE TABLA ACTUALIZADOS */
+        }        
+        /* ESTILOS DE TABLA SIMPLIFICADOS - SIN BOOTSTRAP */
         table {
             font-family: Arial, sans-serif;
             border-collapse: collapse;
-            width: 550px !important;
-            max-width: auto !important;
-            font-size: smaller;
-            /* margin-bottom: 10px; */
-        }
-        
-        td {
-            border: 1px solid black;
-            color: black !important;
-            text-align: center;
-            /* padding: 5px; */
+            width: 565px;
+            max-width: 565px;
+            margin: 0 auto 20px auto;
+            line-height: 1;
+            background-color: transparent;
         }
         
         th {
-            background-color: silver !important;
-            border: 1px solid black;
-            color: black !important;
+            background-color: #232d4f;
+            color: white;
             text-align: center;
-            /* padding: 5px; */
+            vertical-align: middle;
+            border: 1px solid #000;
+            padding: 8px 4px;
+            font-weight: bold;
+            line-height: 1;
+            margin: 0;
         }
         
-        thead {
-            border-bottom: 1px solid black !important;
+        td {
+            border: 1px solid #000;
+            color: black;
+            text-align: center;
+            vertical-align: middle;
+            padding: 4px;
+            line-height: 1;
+            margin: 0;
+            background-color: transparent;
+        }
+        
+        thead, tbody, tr {
+            border: none;
+            background-color: transparent;
+            line-height: 1;
+            margin: 0;
+            padding: 0;
+        }
+        
+        /* Estilos específicos para celdas */
+        td.motivo {
+            text-align: left;
+            /* font-size: x-small; */
+            vertical-align: top;
+            line-height: 1;
+        }
+        
+        td.left-align {
+            text-align: left;
+            /* font-size: xx-small; */
+            vertical-align: middle;
+        }
+        
+        td.left-align-sm {
+            text-align: left;
+            /* font-size: x-small; */
+            vertical-align: middle;
+        }
+        
+        /* Eliminar espaciado de elementos dentro de tablas */
+        table p, table br, table span, table div {
+            margin: 0;
+            padding: 0;
+            line-height: 1;
+            display: inline;
+        }
+        
+        table * {
+            box-sizing: border-box;
+        }
+          th {
+            background-color: #232d4f !important;
+            color: white !important;
+            text-align: center !important;
+            vertical-align: middle !important;
+            border: 1px solid #000 !important;
+            padding: 8px 4px !important;
+            font-weight: bold !important;
+            line-height: 1 !important;
+            margin: 0 !important;
+            height: auto !important;
+            /* Anular Bootstrap específicamente */
+            border-top: 1px solid #000 !important;
+            border-bottom: 1px solid #000 !important;
+            background-image: none !important;
+        }
+        
+        td {
+            border: 1px solid #000;
+            color: black !important;
+            text-align: center !important;
+            padding: 8px;
+            line-height: 1;
+        }
+        
+        /* Estilos específicos para celdas */
+        td.motivo {
+            text-align: left !important;
+            font-size: x-small !important;
+            vertical-align: top;
         }
         
         td.left-align {
@@ -253,55 +478,25 @@
             font-size: x-small !important;
         }
         
-        td.motivo {
-            text-align: left !important;
-            font-size: x-small !important;
+        /* Eliminar espaciado de elementos dentro de tablas */
+        table p, table br {
+            margin: 0 !important;
+            padding: 0 !important;
+            line-height: 1 !important;
         }
         
-        /* @media (max-width: 768px) {
-            .anexo-content {
-                padding: 15px;
-                overflow-x: auto;
-            }
-            
-            table {
-                font-size: 10px;
-            }
-            
-            .btn-anexo {
-                padding: 8px 15px;
-                font-size: 0.9em;
-            }
-            
-            td, th {
-                padding: 5px;
-            }
-        } */
+
     </style>
 </head>
-<body>
-    <!-- Header - Menu Nav -->
+<body>    <!-- Header - Menu Nav -->
     <header class="app-header fixed-top">
-        <nav class="navbar navbar-expand-lg">
+        <nav class="navbar">
             <div class="container">
                 <a class="navbar-brand" href="#">
                     <i class="fas fa-file-contract me-2"></i>Generador de Anexos
                 </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                    <span class="navbar-toggler-icon text-white">☰</span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav ms-auto">
-                        <li class="nav-item">
-                            <a class="nav-link active" href="#"><i class="fas fa-home me-1"></i> Inicio</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#"><i class="fas fa-question-circle me-1"></i> Ayuda</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#"><i class="fas fa-cog me-1"></i> Configuración</a>
-                        </li>
-                    </ul>
+                <div class="navbar-nav">
+                    <a class="nav-link active" href="#"><i class="fas fa-home me-1"></i> Inicio</a>
                 </div>
             </div>
         </nav>
@@ -326,20 +521,19 @@
                 <i class="fas fa-download me-2"></i>Cargar Datos
             </button>
         </div>
-        
-        <ul class="nav nav-tabs" id="anexoTabs" role="tablist">
+          <ul class="nav nav-tabs" id="anexoTabs" role="tablist">
             <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="anexo-i-tab" data-bs-toggle="tab" data-bs-target="#anexo-i" type="button">
+                <button class="nav-link active" id="anexo-i-tab" data-target="#anexo-i" type="button">
                     <i class="fas fa-list-ol me-2"></i>Anexo I
                 </button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link" id="anexo-ii-tab" data-bs-toggle="tab" data-bs-target="#anexo-ii" type="button">
+                <button class="nav-link" id="anexo-ii-tab" data-target="#anexo-ii" type="button">
                     <i class="fas fa-user-minus me-2"></i>Anexo II
                 </button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link" id="anexo-iii-tab" data-bs-toggle="tab" data-bs-target="#anexo-iii" type="button">
+                <button class="nav-link" id="anexo-iii-tab" data-target="#anexo-iii" type="button">
                     <i class="fas fa-user-times me-2"></i>Anexo III
                 </button>
             </li>
@@ -428,22 +622,139 @@
             </div>
         </div>
     </div>
-    
-    <footer>
+      <footer>
         <div class="container">
-            <p class="mb-0">Sistema de Generación de Anexos &copy; 2023 | Todos los derechos reservados</p>
+            <p class="mb-0">Sistema de Generación de Anexos &copy; 2025 | Todos los derechos reservados</p>
         </div>
     </footer>
-
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    
-    <script>
-        // Función para copiar contenido al portapapeles
+      <script>
+        // Configuración de la API
+        const API_KEY = 'AIzaSyBR7ArO3cRNRSibA8L3spSwT-imu6hz05M';
+          // Debug: Confirmar eliminación de Bootstrap
+        console.log('🎨 BOOTSTRAP ELIMINADO - CSS 100% Personalizado');
+        console.log('✅ Encabezados: Fondo #232d4f + Texto blanco + Sin conflictos');
+        console.log('🚀 Rendimiento mejorado sin dependencias externas');
+          // Funcionalidad de tabs nativa (sin Bootstrap)
+        function initializeTabs() {
+            const tabLinks = document.querySelectorAll('.nav-tabs .nav-link');
+            const tabPanes = document.querySelectorAll('.tab-pane');
+            
+            console.log('🔄 Inicializando tabs:', tabLinks.length, 'enlaces encontrados');
+            
+            tabLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    console.log('🖱️ Tab clickeado:', this.textContent.trim());
+                    
+                    // Remover clase active de todos los links
+                    tabLinks.forEach(l => l.classList.remove('active'));
+                    
+                    // Remover clase active de todos los panes
+                    tabPanes.forEach(p => {
+                        p.classList.remove('show', 'active');
+                    });
+                    
+                    // Agregar clase active al link clickeado
+                    this.classList.add('active');
+                      // Mostrar el pane correspondiente
+                    const target = this.getAttribute('data-target') || this.getAttribute('href');
+                    const targetPane = document.querySelector(target);
+                    if (targetPane) {
+                        targetPane.classList.add('show', 'active');
+                        console.log('✅ Tab activado:', target);
+                    } else {
+                        console.error('❌ No se encontró el pane:', target);
+                    }
+                });
+            });
+        }
+        
+        // Función optimizada para copiar contenido al portapapeles con estilos
         function copyToClipboard(containerId) {
             const element = document.getElementById(containerId);
+            
+            if (navigator.clipboard && navigator.clipboard.write) {
+                // Crear HTML optimizado con estilos inline
+                const clonedElement = element.cloneNode(true);
+                applyInlineStyles(clonedElement);
+                
+                const htmlBlob = new Blob([clonedElement.outerHTML], { type: 'text/html' });
+                const textBlob = new Blob([clonedElement.textContent], { type: 'text/plain' });
+                
+                const clipboardItem = new ClipboardItem({
+                    'text/html': htmlBlob,
+                    'text/plain': textBlob
+                });
+                
+                navigator.clipboard.write([clipboardItem])
+                    .then(() => alert('Contenido copiado al portapapeles con formato'))
+                    .catch(() => fallbackCopy(element));
+            } else {
+                fallbackCopy(element);
+            }
+        }
+          // Aplicar estilos inline simplificados - SIN BOOTSTRAP
+        function applyInlineStyles(element) {
+            const tables = element.querySelectorAll('table');
+            tables.forEach(table => {
+                // Estilos de tabla limpios
+                Object.assign(table.style, {
+                    fontFamily: 'Arial, sans-serif',
+                    borderCollapse: 'collapse',
+                    width: '565px',
+                    maxWidth: '565px',
+                    margin: '0 auto 20px auto',
+                    lineHeight: '1',
+                    backgroundColor: 'transparent'
+                });
+                
+                // Estilos de encabezados
+                table.querySelectorAll('th').forEach(th => {
+                    Object.assign(th.style, {
+                        backgroundColor: '#232d4f',
+                        color: 'white',
+                        textAlign: 'center',
+                        border: '1px solid black',
+                        padding: '8px 4px',
+                        fontWeight: 'bold',
+                        lineHeight: '1',
+                        margin: '0'
+                    });
+                });
+                
+                // Estilos de celdas
+                table.querySelectorAll('td').forEach(td => {
+                    Object.assign(td.style, {
+                        border: '1px solid black',
+                        color: 'black',
+                        textAlign: 'center',
+                        padding: '0px',
+                        lineHeight: '1',
+                        margin: '0'
+                    });
+                    
+                    // Estilos específicos por clase
+                    if (td.classList.contains('motivo')) {
+                        td.style.textAlign = 'left';
+                        td.style.fontSize = 'x-small';
+                        td.style.verticalAlign = 'top';
+                    }
+                });
+                
+                // Eliminar espaciado de elementos internos
+                table.querySelectorAll('p, br').forEach(el => {
+                    Object.assign(el.style, {
+                        margin: '0',
+                        padding: '0',
+                        lineHeight: '1'
+                    });
+                });
+            });
+        }
+        
+        // Función de respaldo para navegadores antiguos
+        function fallbackCopy(element) {
             const range = document.createRange();
             range.selectNode(element);
             window.getSelection().removeAllRanges();
@@ -453,31 +764,30 @@
                 document.execCommand('copy');
                 alert('Contenido copiado al portapapeles');
             } catch (err) {
-                alert('Error al copiar: ', err);
+                alert('Error al copiar: ' + err);
             }
             
             window.getSelection().removeAllRanges();
         }
         
-        // Funciones de procesamiento de datos
+        // Funciones de procesamiento de datos optimizadas
         function comprobarCantidades(datos) {
+            if (!datos.length) return [];
+            
             const limite = [];
             let mismo = 1;
 
             for (let i = 0; i < datos.length - 1; i++) {
-                if (datos[i].denominacion === datos[i + 1].denominacion) {
-                    if (datos[i].nivel === datos[i + 1].nivel) {
-                        mismo++;
-                    } else {
-                        limite.push(mismo);
-                        mismo = 1;
-                    }
+                const actual = datos[i];
+                const siguiente = datos[i + 1];
+                
+                if (actual.denominacion === siguiente.denominacion && actual.nivel === siguiente.nivel) {
+                    mismo++;
                 } else {
                     limite.push(mismo);
                     mismo = 1;
                 }
             }
-
             limite.push(mismo);
             return limite;
         }
@@ -494,44 +804,21 @@
                     mismo = 1;
                 }
             }
-
             motivos.push(mismo);
             return motivos;
         }
 
-        function comprobarNIVELes(datos) {
-            const limite = [];
-            let mismo = 1;
-
-            for (let i = 0; i < datos.length - 1; i++) {
-                if (datos[i].nivel === datos[i + 1].nivel) {
-                    mismo++;
-                } else {
-                    limite.push(mismo);
-                    mismo = 1;
-                }
-            }
-            limite.push(mismo);
-            return limite;
-        }
-
         function getJsonArrayFromData(data) {
-            if (!data || !data.length) return [];
+            if (!data?.length) return [];
             
-            const result = [];
-            const headers = data[0];
-            const cols = headers.length;
-            let row = [];
-
-            for (let i = 1, l = data.length; i < l; i++) {
-                row = data[i];
+            const [headers, ...rows] = data;
+            return rows.map(row => {
                 const obj = {};
-                for (let col = 0; col < cols; col++) {
-                    obj[headers[col]] = row[col];
-                }
-                result.push(obj);
-            }
-            return result;
+                headers.forEach((header, index) => {
+                    obj[header] = row[index] || '';
+                });
+                return obj;
+            });
         }
         
         // Función para extraer el ID de la hoja de cálculo de una URL de Google Sheets
@@ -555,207 +842,219 @@
             
             return null;
         }
-        
-        // Función para cargar datos de Google Sheets
-        // Función para cargar datos de Google Sheets
+          // Función optimizada para cargar datos de Google Sheets
         function loadSheetData(sheetName, callback) {
-            const spreadsheetUrl = document.getElementById('spreadsheetUrl').value;
+            const spreadsheetUrl = document.getElementById('spreadsheetUrl').value.trim();
+            console.log(`🔗 URL ingresada:`, spreadsheetUrl);
+            
             if (!spreadsheetUrl) {
                 alert('Por favor ingresa una URL de hoja de cálculo');
                 return;
             }
             
-            // Extraer el ID de la URL
             const spreadsheetId = extractSpreadsheetId(spreadsheetUrl);
+            console.log(`🆔 ID extraído:`, spreadsheetId);
+            
             if (!spreadsheetId) {
                 alert('URL de Google Sheets no válida. Por favor verifica la URL e intenta nuevamente.');
                 return;
             }
             
-            const url = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${sheetName}?dateTimeRenderOption=FORMATTED_STRING&majorDimension=ROWS&key=AIzaSyBR7ArO3cRNRSibA8L3spSwT-imu6hz05M`;
+            const url = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${sheetName}?dateTimeRenderOption=FORMATTED_STRING&majorDimension=ROWS&key=${API_KEY}`;
+            console.log(`🌐 Llamando a API:`, url);
             
             fetch(url)
-                .then(response => response.json())
+                .then(response => {
+                    console.log(`📡 Respuesta HTTP:`, response.status, response.statusText);
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
                 .then(data => {
+                    console.log(`📋 Datos de API:`, data);
                     if (data.error) {
                         throw new Error(data.error.message);
                     }
-                    callback(data.values);
+                    callback(data.values || []);
                 })
                 .catch(error => {
-                    console.error('Error:', error);
+                    console.error('❌ Error:', error);
                     alert(`Error al cargar datos: ${error.message}`);
                 });
-        }
-        
-        // Funciones para generar cada anexo
-        function generarAnexoI() {
-            $('#loadingAnexoI').show();
-            $('#show-total').empty();
+        }          // Función genérica optimizada para generar anexos (JavaScript nativo)
+        function generarAnexo(anexoNumber, sheetName, containerId, loadingId, counterId) {
+            console.log(`🔄 Generando ${sheetName}...`);
             
-            loadSheetData('Anexo-I', function(data) {
+            // Mostrar loading y limpiar contenido
+            const loadingElement = document.getElementById(loadingId);
+            const containerElement = document.getElementById(containerId);
+            const counterElement = document.getElementById(counterId);
+            
+            console.log(`📍 Elementos encontrados:`, {
+                loading: !!loadingElement,
+                container: !!containerElement, 
+                counter: !!counterElement
+            });
+            
+            if (loadingElement) loadingElement.style.display = 'flex';
+            if (containerElement) containerElement.innerHTML = '';
+            
+            loadSheetData(sheetName, function(data) {
+                console.log(`📊 Datos recibidos de ${sheetName}:`, data.length, 'filas');
+                
                 const datos = getJsonArrayFromData(data);
+                console.log(`🔄 Datos procesados:`, datos.length, 'registros');
+                
+                if (!datos.length) {
+                    if (loadingElement) loadingElement.style.display = 'none';
+                    alert(`No se encontraron datos en ${sheetName}`);
+                    return;
+                }
+                
                 let html = '';
                 let inicio = 0;
                 const limite = comprobarCantidades(datos);
                 let total = 0;
 
-                for (let j = 0; j < limite.length; j++) {
-                    const fin = inicio + limite[j];
+                limite.forEach(cantidad => {
+                    const fin = inicio + cantidad;
                     total = fin;
 
-                    html += `<table align="center">`;
-                    html += `<thead>`;
-                    html += `<tr>`;
-                    html += `<th colspan="3">${datos[inicio].id_puesto}:: ${datos[inicio].denominacion}</th>`;
-                    html += `</tr>`;
-                    html += `<tr>`;
-                    html += `<th>Apellido</th>`;
-                    html += `<th>Nombre</th>`;
-                    html += `<th>CUIL</th>`;
-                    html += `</tr>`;
-                    html += `</thead>`;
-                    html += `<tbody>`;
-
-                    for (let i = inicio; i < fin; i++) {                    
-                        html += `<tr>`;
-                        html += `<td>${datos[i].apellido}</td>`;
-                        html += `<td>${datos[i].nombre}</td>`;
-                        html += `<td>${datos[i].cuil}</td>`;
-                        html += `</tr>`;
-
-                        inicio++;
+                    // Generar tabla según el tipo de anexo
+                    if (anexoNumber === 3) {
+                        html += generarTablaAnexoIII(datos, inicio, fin);
+                        total = limite.length; // Para Anexo III contar excluidos, no registros
+                    } else {
+                        html += generarTablaBasica(datos, inicio, fin);
                     }
+                    
+                    inicio = fin;
+                });
 
-                    html += `</tbody>`;
-                    html += `</table>`;
-                    html += `<br>`;
-                }
+                console.log(`✅ HTML generado (${html.length} caracteres), Total: ${total}`);
 
-                $('#totalCounter').text(total);
-                $('#show-total').html(html);
-                $('#loadingAnexoI').hide();
+                // Actualizar contador y contenido
+                if (counterElement) counterElement.textContent = total;
+                if (containerElement) containerElement.innerHTML = html;
+                if (loadingElement) loadingElement.style.display = 'none';
+                
+                console.log(`🎯 ${sheetName} completado exitosamente`);
             });
+        }
+        
+        // Función para generar tabla básica (Anexo I y II)
+        function generarTablaBasica(datos, inicio, fin) {
+            let html = `<table>
+                <thead>
+                    <tr><th colspan="3">${datos[inicio].id_puesto}:: ${datos[inicio].denominacion}</th></tr>
+                    <tr>
+                        <th>Apellido</th>
+                        <th>Nombre</th>
+                        <th>CUIL</th>
+                    </tr>
+                </thead>
+                <tbody>`;
+
+            for (let i = inicio; i < fin; i++) {
+                html += `<tr>
+                    <td>${datos[i].apellido || ''}</td>
+                    <td>${datos[i].nombre || ''}</td>
+                    <td>${datos[i].cuil || ''}</td>
+                </tr>`;
+            }
+
+            return html + '</tbody></table><br>';
+        }
+        
+        // Función para generar tabla del Anexo III
+        function generarTablaAnexoIII(datos, inicio, fin) {
+            const motivos = comprobarMotivos(inicio, fin, datos);
+            let html = `<table>
+                <thead>
+                    <tr><th colspan="4">${datos[inicio].id_puesto}:: ${datos[inicio].denominacion}</th></tr>
+                    <tr>
+                        <th>Apellido</th>
+                        <th>Nombre</th>
+                        <th>CUIL</th>
+                        <th>El Aspirante no certifica cumplir con los requisitos excluyentes, detallados a continuación:</th>
+                    </tr>
+                </thead>
+                <tbody>`;
+
+            let indiceActual = inicio;
+            motivos.forEach(cantidad => {
+                html += `<tr>
+                    <td>${datos[indiceActual].apellido || ''}</td>
+                    <td>${datos[indiceActual].nombre || ''}</td>
+                    <td>${datos[indiceActual].cuil || ''}</td>
+                    <td class="motivo">`;
+                
+                for (let i = 0; i < cantidad; i++) {
+                    html += `• ${datos[indiceActual].motivos_exclusion || ''}<br>`;
+                    indiceActual++;
+                }
+                
+                html += '</td></tr>';
+            });
+
+            return html + '</tbody></table><br>';
+        }
+        
+        // Funciones simplificadas para generar cada anexo
+        function generarAnexoI() {
+            generarAnexo(1, 'Anexo-I', 'show-total', 'loadingAnexoI', 'totalCounter');
         }
         
         function generarAnexoII() {
-            $('#loadingAnexoII').show();
-            $('#show-admitidos').empty();
-            
-            loadSheetData('Anexo-II', function(data) {
-                const datos = getJsonArrayFromData(data);
-                let html = '';
-                let inicio = 0;
-                const limite = comprobarCantidades(datos);
-                let total = 0;
-
-                for (let j = 0; j < limite.length; j++) {
-                    const fin = inicio + limite[j];
-                    total = fin;
-
-                    html += `<table align="center">`;
-                    html += `<thead>`;
-                    html += `<tr>`;
-                    html += `<th colspan="3">${datos[inicio].id_puesto}:: ${datos[inicio].denominacion}</th>`;
-                    html += `</tr>`;
-                    html += `<tr>`;
-                    html += `<th>Apellido</th>`;
-                    html += `<th>Nombre</th>`;
-                    html += `<th>CUIL</th>`;
-                    html += `</tr>`;
-                    html += `</thead>`;
-                    html += `<tbody>`;
-
-                    for (let i = inicio; i < fin; i++) {                    
-                        html += `<tr>`;
-                        html += `<td>${datos[i].apellido}</td>`;
-                        html += `<td>${datos[i].nombre}</td>`;
-                        html += `<td>${datos[i].cuil}</td>`;
-                        html += `</tr>`;
-
-                        inicio++;
-                    }
-
-                    html += `</tbody>`;
-                    html += `</table>`;
-                    html += `<br>`;
-                }
-
-                $('#admitidosCounter').text(total);
-                $('#show-admitidos').html(html);
-                $('#loadingAnexoII').hide();
-            });
+            generarAnexo(2, 'Anexo-II', 'show-admitidos', 'loadingAnexoII', 'admitidosCounter');
         }
-        
-        function generarAnexoIII() {
-            $('#loadingAnexoIII').show();
-            $('#show-excluidos').empty();
-            
-            loadSheetData('Anexo-III', function(data) {
-                const datos = getJsonArrayFromData(data);
-                let html = '';
-                let inicio = 0;
-                const limite = comprobarCantidades(datos);
-                let excluidos = 0;
-
-                for (let j = 0; j < limite.length; j++) {
-                    const fin = inicio + limite[j];
-                    const motivos = comprobarMotivos(inicio, fin, datos);
-
-                    html += `<table align="center">`;
-                    html += `<thead>`;
-                    html += `<tr>`;
-                    html += `<th colspan="4">${datos[inicio].id_puesto}:: ${datos[inicio].denominacion}</th>`;
-                    html += `</tr>`;
-                    html += `<tr>`;
-                    html += `<th>Apellido</th>`;
-                    html += `<th>Nombre</th>`;
-                    html += `<th>CUIL</th>`;
-                    html += `<th>El Aspirante no certifica cumplir con los requisitos excluyentes, detallados a continuación:</th>`;
-                    html += `</tr>`;
-                    html += `</thead>`;
-                    html += `<tbody>`;
-
-                    for (let k = 0; k < motivos.length; k++) {
-                        html += `<tr>`;
-                        html += `<td>${datos[inicio].apellido}</td>`;
-                        html += `<td>${datos[inicio].nombre}</td>`;
-                        html += `<td>${datos[inicio].cuil}</td>`;
-                        excluidos++;
-
-                        html += `<td class="motivo">`;
-                        for (let i = 0; i < motivos[k]; i++) {
-                            html += `<p>• ${datos[inicio].motivos_exclusion}</p>`;
-                            inicio++;
-                        }
-
-                        html += `</td>`;
-                        html += `</tr>`;
-                    }
-                    html += `</tbody>`;
-                    html += `</table>`;
-                    html += `<br>`;
-                }
-
-                $('#excluidosCounter').text(excluidos);
-                $('#show-excluidos').html(html);
-                $('#loadingAnexoIII').hide();
-            });
-        }
-        
-        // Cargar datos cuando se hace clic en el botón
-        document.getElementById('loadDataBtn').addEventListener('click', function() {
-            generarAnexoI();
-            generarAnexoII();
-            generarAnexoIII();
-        });
-        
-        // Para propósitos de demostración, cargamos datos de muestra
+          function generarAnexoIII() {
+            generarAnexo(3, 'Anexo-III', 'show-excluidos', 'loadingAnexoIII', 'excluidosCounter');
+        }          // Event listeners optimizados
         document.addEventListener('DOMContentLoaded', function() {
-            // Esto es solo para la demostración - en producción no se cargarían datos automáticamente
-            generarAnexoI();
-            generarAnexoII();
-            generarAnexoIII();
+            console.log('🚀 DOM cargado, inicializando aplicación...');
+            
+            // Inicializar funcionalidad de tabs nativa
+            initializeTabs();
+            
+            const loadBtn = document.getElementById('loadDataBtn');
+            console.log('🔘 Botón encontrado:', !!loadBtn);
+            
+            if (!loadBtn) {
+                console.error('❌ No se encontró el botón loadDataBtn');
+                return;
+            }
+            
+            // Cargar datos al hacer clic
+            loadBtn.addEventListener('click', function() {
+                console.log('🖱️ Botón clickeado, iniciando carga...');
+                
+                this.disabled = true;
+                this.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Cargando...';
+                
+                Promise.all([
+                    new Promise(resolve => {
+                        generarAnexoI();
+                        setTimeout(resolve, 100);
+                    }),
+                    new Promise(resolve => {
+                        generarAnexoII();
+                        setTimeout(resolve, 100);
+                    }),
+                    new Promise(resolve => {
+                        generarAnexoIII();
+                        setTimeout(resolve, 100);
+                    })
+                ]).finally(() => {
+                    this.disabled = false;
+                    this.innerHTML = '<i class="fas fa-download me-2"></i>Cargar Datos';
+                    console.log('✅ Carga de todos los anexos completada');
+                });
+            });
+            
+            console.log('✅ Aplicación iniciada correctamente sin Bootstrap');
+            console.log('🎯 Lista para cargar datos de Google Sheets');
         });
     </script>
 </body>
