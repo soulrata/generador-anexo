@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Mapeo Datos</title>
+</head>
+<body>
+    <h1>Test de Mapeo de Datos CyL</h1>
+    <div id="test-output"></div>
+    
+    <script>
+        // Datos de ejemplo simulando la estructura de Google Sheets
+        const testData = [
+            ['id', 'id_puesto', 'denominacion', 'nivel', 'id_postulacion', 'apellido', 'nombre', 'cuil', 'Curricular', 'Laboral', 'Total', 'Ponderado'],
+            ['1', 'P001', 'Analista de Sistemas', 'A', '001', 'Pérez', 'Juan', '20-12345678-9', '85', '90', '175', '87.5'],
+            ['2', 'P001', 'Analista de Sistemas', 'A', '002', 'García', 'María', '27-98765432-1', '78', '88', '166', '83.0']
+        ];
+        
+        function getJsonArrayFromData(data) {
+            if (!data?.length) return [];
+            
+            const [headers, ...rows] = data;
+            return rows.map(row => {
+                const obj = {};
+                headers.forEach((header, index) => {
+                    obj[header] = row[index] || '';
+                });
+                return obj;
+            });
+        }
+        
+        function generarTablaAnexoIV(datos, inicio, fin) {
+            let html = `<table border="1">
+                <thead>
+                    <tr><th colspan="6">${datos[inicio].id_puesto}:: ${datos[inicio].denominacion}</th></tr>
+                    <tr>
+                        <th>Apellido</th>
+                        <th>Nombre</th>
+                        <th>CUIL</th>
+                        <th>Anteced. Curric.</th>
+                        <th>Anteced. Lab.</th>
+                        <th>Puntaje Total de la Etapa</th>
+                    </tr>
+                </thead>
+                <tbody>`;
+
+            for (let i = inicio; i < fin; i++) {
+                html += `<tr>
+                    <td>${datos[i].apellido || ''}</td>
+                    <td>${datos[i].nombre || ''}</td>
+                    <td>${datos[i].cuil || ''}</td>
+                    <td>${datos[i].Curricular || ''}</td>
+                    <td>${datos[i].Laboral || ''}</td>
+                    <td>${datos[i].Total || ''}</td>
+                </tr>`;
+            }
+
+            return html + '</tbody></table><br>';
+        }
+        
+        // Test
+        const datos = getJsonArrayFromData(testData);
+        console.log('Datos procesados:', datos);
+        
+        const tablaHTML = generarTablaAnexoIV(datos, 0, datos.length);
+        document.getElementById('test-output').innerHTML = tablaHTML;
+        
+        // Mostrar estructura de datos
+        datos.forEach((item, index) => {
+            console.log(`Registro ${index + 1}:`, item);
+        });
+    </script>
+</body>
+</html>

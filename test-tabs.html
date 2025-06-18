@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Tabs</title>
+    <style>
+        .nav-tabs {
+            display: flex;
+            border-bottom: 2px solid #dee2e6;
+            margin-bottom: 0;
+            list-style: none;
+            padding: 0;
+            flex-wrap: wrap;
+        }
+        
+        .nav-item {
+            margin-bottom: -2px;
+        }
+        
+        .nav-tabs .nav-link {
+            display: block;
+            padding: 12px 25px;
+            border: none;
+            background: none;
+            color: #34495e;
+            font-weight: 600;
+            text-decoration: none;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-tabs .nav-link:hover {
+            color: #44589b;
+            background-color: #f8f9fa;
+        }
+        
+        .nav-tabs .nav-link.active {
+            color: #44589b;
+            border-bottom-color: #44589b;
+            background-color: white;
+        }
+        
+        .tab-content {
+            padding: 20px 0;
+        }
+        
+        .tab-pane {
+            display: none;
+        }
+        
+        .tab-pane.show.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Test de Tabs</h1>
+        
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <button class="nav-link active" data-target="#tab1">Tab 1</button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link" data-target="#tab2">Tab 2</button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link" data-target="#tab3">Tab 3</button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link" data-target="#tab4">Tab 4</button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link" data-target="#tab5">Tab 5</button>
+            </li>
+        </ul>
+        
+        <div class="tab-content">
+            <div class="tab-pane show active" id="tab1">
+                <h2>Contenido Tab 1</h2>
+                <p>Este es el contenido del primer tab.</p>
+            </div>
+            <div class="tab-pane" id="tab2">
+                <h2>Contenido Tab 2</h2>
+                <p>Este es el contenido del segundo tab.</p>
+            </div>
+            <div class="tab-pane" id="tab3">
+                <h2>Contenido Tab 3</h2>
+                <p>Este es el contenido del tercer tab.</p>
+            </div>
+            <div class="tab-pane" id="tab4">
+                <h2>Contenido Tab 4</h2>
+                <p>Este es el contenido del cuarto tab.</p>
+            </div>
+            <div class="tab-pane" id="tab5">
+                <h2>Contenido Tab 5</h2>
+                <p>Este es el contenido del quinto tab.</p>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function initializeTabs() {
+            const tabLinks = document.querySelectorAll('.nav-tabs .nav-link');
+            const tabPanes = document.querySelectorAll('.tab-pane');
+            
+            console.log('Tabs encontrados:', tabLinks.length);
+            
+            tabLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Remover clase active de todos los links
+                    tabLinks.forEach(l => l.classList.remove('active'));
+                    
+                    // Remover clase active de todos los panes
+                    tabPanes.forEach(p => {
+                        p.classList.remove('show', 'active');
+                    });
+                    
+                    // Agregar clase active al link clickeado
+                    this.classList.add('active');
+                    
+                    // Mostrar el pane correspondiente
+                    const target = this.getAttribute('data-target');
+                    const targetPane = document.querySelector(target);
+                    if (targetPane) {
+                        targetPane.classList.add('show', 'active');
+                    }
+                });
+            });
+        }
+        
+        document.addEventListener('DOMContentLoaded', initializeTabs);
+    </script>
+</body>
+</html>
