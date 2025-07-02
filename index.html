@@ -764,6 +764,11 @@
                     <i class="fas fa-award me-2"></i>Anexo VI
                 </button>
             </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="anexo-vii-tab" data-target="#anexo-vii" type="button">
+                    <i class="fas fa-medal me-2"></i>Anexo VII
+                </button>
+            </li>
         </ul>
 
         <div class="tab-content" id="anexoTabContent">
@@ -917,13 +922,40 @@
                         </h3>
                         <div id="miContenidoAnexoVI">
                             <p class="anexo-subtitle" style="text-align: right;"><b>ANEXO VI</b></p>
-                            <h4 class="anexo-title" style="text-align: center;">Nómina de resultados de la Evaluación Técnica Sustantiva con identificación</h4>
+                            <h4 class="anexo-title" style="text-align: center;">Nómina de resultados de la Evaluación Técnica Sustantiva</h4>
                             <div class="loading" id="loadingAnexoVI">
                                 <div class="spinner-border" role="status">
                                     <span class="visually-hidden">Cargando...</span>
                                 </div>
                             </div>
                             <div id="show-sustantiva"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Anexo VII -->
+            <div class="tab-pane fade" id="anexo-vii" role="tabpanel">
+                <div class="anexo-card">
+                    <div class="anexo-header">
+                        <h2 class="mb-0"><i class="fas fa-medal me-2"></i>Anexo VII</h2>
+                        <button class="btn-anexo" onclick="copyToClipboard('miContenidoAnexoVII')">
+                            <i class="far fa-copy"></i> Copiar Contenido
+                        </button>
+                    </div>
+                    <div class="anexo-content">
+                        <h3 class="text-center mb-4">
+                            Total: <span class="counter-badge" id="sustantivaIdentificacionCounter">0</span>
+                        </h3>
+                        <div id="miContenidoAnexoVII">
+                            <p class="anexo-subtitle" style="text-align: right;"><b>ANEXO VII</b></p>
+                            <h4 class="anexo-title" style="text-align: center;">Nómina de resultados de la Evaluación Técnica Sustantiva con identificación</h4>
+                            <div class="loading" id="loadingAnexoVII">
+                                <div class="spinner-border" role="status">
+                                    <span class="visually-hidden">Cargando...</span>
+                                </div>
+                            </div>
+                            <div id="show-sustantiva-identificacion"></div>
                         </div>
                     </div>
                 </div>
@@ -955,11 +987,15 @@
                 console.log(`Tab ${index + 1}:`, link.textContent.trim(), 'Target:', link.getAttribute('data-target'));
             });
 
-            // Verificar específicamente el Anexo VI
+            // Verificar específicamente el Anexo VI y VII
             const anexoVI = document.getElementById('anexo-vi-tab');
             const anexoVIPane = document.getElementById('anexo-vi');
+            const anexoVII = document.getElementById('anexo-vii-tab');
+            const anexoVIIPane = document.getElementById('anexo-vii');
             console.log('🔍 Anexo VI Tab encontrado:', !!anexoVI);
             console.log('🔍 Anexo VI Pane encontrado:', !!anexoVIPane);
+            console.log('🔍 Anexo VII Tab encontrado:', !!anexoVII);
+            console.log('🔍 Anexo VII Pane encontrado:', !!anexoVIIPane);
 
             tabLinks.forEach(link => {
                 link.addEventListener('click', function (e) {
@@ -1348,6 +1384,8 @@
                         html += generarTablaAnexoV(datos, inicio, fin);
                     } else if (anexoNumber === 6) {
                         html += generarTablaAnexoVI(datos, inicio, fin);
+                    } else if (anexoNumber === 7) {
+                        html += generarTablaAnexoVII(datos, inicio, fin);
                     } else {
                         html += generarTablaBasica(datos, inicio, fin);
                     }
@@ -1485,8 +1523,30 @@
             return html + '</tbody></table><br>';
         }
 
-        // Función para generar tabla del Anexo VI (Sustantiva - 5 columnas)
+        // Función para generar tabla del Anexo VI (Sustantiva - 2 columnas)
         function generarTablaAnexoVI(datos, inicio, fin) {
+            let html = `<table>
+                <thead>
+                    <tr><th colspan="2">${datos[inicio].id_puesto}:: ${datos[inicio].denominacion}</th></tr>
+                    <tr>
+                        <th>Pseudónimo</th>
+                        <th>Puntaje</th>
+                    </tr>
+                </thead>
+                <tbody>`;
+
+            for (let i = inicio; i < fin; i++) {
+                html += `<tr>
+                    <td>${datos[i].pseudonimo || ''}</td>
+                    <td>${datos[i].puntaje || ''}</td>
+                </tr>`;
+            }
+
+            return html + '</tbody></table><br>';
+        }
+
+        // Función para generar tabla del Anexo VII (Sustantiva con identificación - 5 columnas)
+        function generarTablaAnexoVII(datos, inicio, fin) {
             let html = `<table>
                 <thead>
                     <tr><th colspan="5">${datos[inicio].id_puesto}:: ${datos[inicio].denominacion}</th></tr>
@@ -1535,6 +1595,11 @@
         function generarAnexoVI() {
             console.log('🚀 Iniciando generación de Anexo VI...');
             generarAnexo(6, 'Anexo-Sustantiva', 'show-sustantiva', 'loadingAnexoVI', 'sustantivaCounter');
+        }
+
+        function generarAnexoVII() {
+            console.log('🚀 Iniciando generación de Anexo VII...');
+            generarAnexo(7, 'Anexo-Sustantiva', 'show-sustantiva-identificacion', 'loadingAnexoVII', 'sustantivaIdentificacionCounter');
         }        // Event listeners optimizados
         document.addEventListener('DOMContentLoaded', function () {
             console.log('🚀 DOM cargado, inicializando aplicación...');
@@ -1544,10 +1609,10 @@
 
             // Verificar que todos los elementos existan
             const elementos = [
-                'anexo-i', 'anexo-ii', 'anexo-iii', 'anexo-iv', 'anexo-v', 'anexo-vi',
-                'show-total', 'show-admitidos', 'show-excluidos', 'show-cyl1', 'show-cyl2', 'show-sustantiva',
-                'loadingAnexoI', 'loadingAnexoII', 'loadingAnexoIII', 'loadingAnexoIV', 'loadingAnexoV', 'loadingAnexoVI',
-                'totalCounter', 'admitidosCounter', 'excluidosCounter', 'cyLCounter1', 'cyLCounter2', 'sustantivaCounter'
+                'anexo-i', 'anexo-ii', 'anexo-iii', 'anexo-iv', 'anexo-v', 'anexo-vi', 'anexo-vii',
+                'show-total', 'show-admitidos', 'show-excluidos', 'show-cyl1', 'show-cyl2', 'show-sustantiva', 'show-sustantiva-identificacion',
+                'loadingAnexoI', 'loadingAnexoII', 'loadingAnexoIII', 'loadingAnexoIV', 'loadingAnexoV', 'loadingAnexoVI', 'loadingAnexoVII',
+                'totalCounter', 'admitidosCounter', 'excluidosCounter', 'cyLCounter1', 'cyLCounter2', 'sustantivaCounter', 'sustantivaIdentificacionCounter'
             ];
 
             elementos.forEach(id => {
@@ -1597,6 +1662,10 @@
                     }),
                     new Promise(resolve => {
                         generarAnexoVI();
+                        setTimeout(resolve, 100);
+                    }),
+                    new Promise(resolve => {
+                        generarAnexoVII();
                         setTimeout(resolve, 100);
                     })
                 ]).finally(() => {
