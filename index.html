@@ -1545,17 +1545,18 @@
             return html + '</tbody></table><br>';
         }
 
-        // Función para generar tabla del Anexo VII (Sustantiva con identificación - 5 columnas)
+        // Función para generar tabla del Anexo VII (Sustantiva con identificación - 6 columnas)
         function generarTablaAnexoVII(datos, inicio, fin) {
             let html = `<table>
                 <thead>
-                    <tr><th colspan="5">${datos[inicio].id_puesto}:: ${datos[inicio].denominacion}</th></tr>
+                    <tr><th colspan="6">${datos[inicio].id_puesto}:: ${datos[inicio].denominacion}</th></tr>
                     <tr>
                         <th>Apellido</th>
                         <th>Nombre</th>
                         <th>CUIL</th>
                         <th>Pseudónimo</th>
                         <th>Puntaje</th>
+                        <th>Ponderado de la etapa (50%)</th>
                     </tr>
                 </thead>
                 <tbody>`;
@@ -1567,6 +1568,7 @@
                     <td>${datos[i].cuil || ''}</td>
                     <td>${datos[i].pseudonimo || ''}</td>
                     <td>${datos[i].puntaje || ''}</td>
+                    <td>${datos[i].ponderado || ''}</td>
                 </tr>`;
             }
 
