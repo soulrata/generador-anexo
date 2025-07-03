@@ -769,6 +769,11 @@
                     <i class="fas fa-medal me-2"></i>Anexo VII
                 </button>
             </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="anexo-viii-tab" data-target="#anexo-viii" type="button">
+                    <i class="fas fa-user-slash me-2"></i>Anexo VIII
+                </button>
+            </li>
         </ul>
 
         <div class="tab-content" id="anexoTabContent">
@@ -956,6 +961,32 @@
                                 </div>
                             </div>
                             <div id="show-sustantiva-identificacion"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Anexo VIII -->
+            <div class="tab-pane fade" id="anexo-viii" role="tabpanel">
+                <div class="anexo-card">
+                    <div class="anexo-header">
+                        <h2 class="mb-0"><i class="fas fa-user-slash me-2"></i>Anexo VIII</h2>
+                        <button class="btn-anexo" onclick="copyToClipboard('miContenidoAnexoVIII')">
+                            <i class="far fa-copy"></i> Copiar Contenido
+                        </button>
+                    </div>
+                    <div class="anexo-content">
+                        <h3 class="text-center mb-4">
+                            Ausentes: <span class="counter-badge" id="ausentesCounter">0</span>
+                        </h3>
+                        <div id="miContenidoAnexoVIII">
+                            <p class="anexo-subtitle" style="text-align: right;"><b>ANEXO VIII</b></p>
+                            <h4 class="anexo-title" style="text-align: center;">Listado de Ausentes</h4>
+                            <div class="loading" id="loadingAnexoVIII">
+                                <div class="spinner-border" role="status">
+                                    <span class="visually-hidden">Cargando...</span>
+                                </div>
+                            </div>
+                            <div id="show-ausentes"></div>
                         </div>
                     </div>
                 </div>
@@ -1386,6 +1417,8 @@
                         html += generarTablaAnexoVI(datos, inicio, fin);
                     } else if (anexoNumber === 7) {
                         html += generarTablaAnexoVII(datos, inicio, fin);
+                    } else if (anexoNumber === 8) {
+                        html += generarTablaAnexoVIII(datos, inicio, fin);
                     } else {
                         html += generarTablaBasica(datos, inicio, fin);
                     }
@@ -1556,7 +1589,7 @@
                         <th>CUIL</th>
                         <th>Pseudónimo</th>
                         <th>Puntaje</th>
-                        <th>Ponderado de la etapa (50%)</th>
+                        <th>Puntaje ponderado de la etapa</th>
                     </tr>
                 </thead>
                 <tbody>`;
@@ -1569,6 +1602,30 @@
                     <td>${datos[i].pseudonimo || ''}</td>
                     <td>${datos[i].puntaje || ''}</td>
                     <td>${datos[i].ponderado || ''}</td>
+                </tr>`;
+            }
+
+            return html + '</tbody></table><br>';
+        }
+
+        // Función para generar tabla del Anexo VIII (Ausentes - 3 columnas)
+        function generarTablaAnexoVIII(datos, inicio, fin) {
+            let html = `<table>
+                <thead>
+                    <tr><th colspan="3">${datos[inicio].id_puesto}:: ${datos[inicio].denominacion}</th></tr>
+                    <tr>
+                        <th>Apellido</th>
+                        <th>Nombre</th>
+                        <th>CUIL</th>
+                    </tr>
+                </thead>
+                <tbody>`;
+
+            for (let i = inicio; i < fin; i++) {
+                html += `<tr>
+                    <td>${datos[i].apellido || ''}</td>
+                    <td>${datos[i].nombre || ''}</td>
+                    <td>${datos[i].cuil || ''}</td>
                 </tr>`;
             }
 
@@ -1602,6 +1659,11 @@
         function generarAnexoVII() {
             console.log('🚀 Iniciando generación de Anexo VII...');
             generarAnexo(7, 'Anexo-Sustantiva', 'show-sustantiva-identificacion', 'loadingAnexoVII', 'sustantivaIdentificacionCounter');
+        }
+
+        function generarAnexoVIII() {
+            console.log('🚀 Iniciando generación de Anexo VIII...');
+            generarAnexo(8, 'Ausentes', 'show-ausentes', 'loadingAnexoVIII', 'ausentesCounter');
         }        // Event listeners optimizados
         document.addEventListener('DOMContentLoaded', function () {
             console.log('🚀 DOM cargado, inicializando aplicación...');
@@ -1611,10 +1673,10 @@
 
             // Verificar que todos los elementos existan
             const elementos = [
-                'anexo-i', 'anexo-ii', 'anexo-iii', 'anexo-iv', 'anexo-v', 'anexo-vi', 'anexo-vii',
-                'show-total', 'show-admitidos', 'show-excluidos', 'show-cyl1', 'show-cyl2', 'show-sustantiva', 'show-sustantiva-identificacion',
-                'loadingAnexoI', 'loadingAnexoII', 'loadingAnexoIII', 'loadingAnexoIV', 'loadingAnexoV', 'loadingAnexoVI', 'loadingAnexoVII',
-                'totalCounter', 'admitidosCounter', 'excluidosCounter', 'cyLCounter1', 'cyLCounter2', 'sustantivaCounter', 'sustantivaIdentificacionCounter'
+                'anexo-i', 'anexo-ii', 'anexo-iii', 'anexo-iv', 'anexo-v', 'anexo-vi', 'anexo-vii', 'anexo-viii',
+                'show-total', 'show-admitidos', 'show-excluidos', 'show-cyl1', 'show-cyl2', 'show-sustantiva', 'show-sustantiva-identificacion', 'show-ausentes',
+                'loadingAnexoI', 'loadingAnexoII', 'loadingAnexoIII', 'loadingAnexoIV', 'loadingAnexoV', 'loadingAnexoVI', 'loadingAnexoVII', 'loadingAnexoVIII',
+                'totalCounter', 'admitidosCounter', 'excluidosCounter', 'cyLCounter1', 'cyLCounter2', 'sustantivaCounter', 'sustantivaIdentificacionCounter', 'ausentesCounter'
             ];
 
             elementos.forEach(id => {
@@ -1668,6 +1730,10 @@
                     }),
                     new Promise(resolve => {
                         generarAnexoVII();
+                        setTimeout(resolve, 100);
+                    }),
+                    new Promise(resolve => {
+                        generarAnexoVIII();
                         setTimeout(resolve, 100);
                     })
                 ]).finally(() => {
