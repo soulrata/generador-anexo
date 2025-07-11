@@ -774,6 +774,21 @@
                     <i class="fas fa-user-slash me-2"></i>Anexo VIII
                 </button>
             </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="anexo-ix-tab" data-target="#anexo-ix" type="button">
+                    <i class="fas fa-brain me-2"></i>Anexo IX
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="anexo-x-tab" data-target="#anexo-x" type="button">
+                    <i class="fas fa-trophy me-2"></i>Anexo X
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="anexo-xi-tab" data-target="#anexo-xi" type="button">
+                    <i class="fas fa-comments me-2"></i>Anexo XI
+                </button>
+            </li>
         </ul>
 
         <div class="tab-content" id="anexoTabContent">
@@ -987,6 +1002,85 @@
                                 </div>
                             </div>
                             <div id="show-ausentes"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Anexo IX -->
+            <div class="tab-pane fade" id="anexo-ix" role="tabpanel">
+                <div class="anexo-card">
+                    <div class="anexo-header">
+                        <h2 class="mb-0"><i class="fas fa-brain me-2"></i>Anexo IX</h2>
+                        <button class="btn-anexo" onclick="copyToClipboard('miContenidoAnexoIX')">
+                            <i class="far fa-copy"></i> Copiar Contenido
+                        </button>
+                    </div>
+                    <div class="anexo-content">
+                        <h3 class="text-center mb-4">
+                            PGI: <span class="counter-badge" id="pgiCounter">0</span>
+                        </h3>
+                        <div id="miContenidoAnexoIX">
+                            <p class="anexo-subtitle" style="text-align: right;"><b>ANEXO IX</b></p>
+                            <h4 class="anexo-title" style="text-align: center;">PGI</h4>
+                            <div class="loading" id="loadingAnexoIX">
+                                <div class="spinner-border" role="status">
+                                    <span class="visually-hidden">Cargando...</span>
+                                </div>
+                            </div>
+                            <div id="show-pgi"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Anexo X -->
+            <div class="tab-pane fade" id="anexo-x" role="tabpanel">
+                <div class="anexo-card">
+                    <div class="anexo-header">
+                        <h2 class="mb-0"><i class="fas fa-trophy me-2"></i>Anexo X</h2>
+                        <button class="btn-anexo" onclick="copyToClipboard('miContenidoAnexoX')">
+                            <i class="far fa-copy"></i> Copiar Contenido
+                        </button>
+                    </div>
+                    <div class="anexo-content">
+                        <h3 class="text-center mb-4">
+                            Total: <span class="counter-badge" id="totalEntrevistaCounter">0</span>
+                        </h3>
+                        <div id="miContenidoAnexoX">
+                            <p class="anexo-subtitle" style="text-align: right;"><b>ANEXO X</b></p>
+                            <h4 class="anexo-title" style="text-align: center;">Total</h4>
+                            <div class="loading" id="loadingAnexoX">
+                                <div class="spinner-border" role="status">
+                                    <span class="visually-hidden">Cargando...</span>
+                                </div>
+                            </div>
+                            <div id="show-total-entrevista"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Anexo XI -->
+            <div class="tab-pane fade" id="anexo-xi" role="tabpanel">
+                <div class="anexo-card">
+                    <div class="anexo-header">
+                        <h2 class="mb-0"><i class="fas fa-comments me-2"></i>Anexo XI</h2>
+                        <button class="btn-anexo" onclick="copyToClipboard('miContenidoAnexoXI')">
+                            <i class="far fa-copy"></i> Copiar Contenido
+                        </button>
+                    </div>
+                    <div class="anexo-content">
+                        <h3 class="text-center mb-4">
+                            Entrevistas: <span class="counter-badge" id="entrevistaCounter">0</span>
+                        </h3>
+                        <div id="miContenidoAnexoXI">
+                            <p class="anexo-subtitle" style="text-align: right;"><b>ANEXO XI</b></p>
+                            <h4 class="anexo-title" style="text-align: center;">Entrevista</h4>
+                            <div class="loading" id="loadingAnexoXI">
+                                <div class="spinner-border" role="status">
+                                    <span class="visually-hidden">Cargando...</span>
+                                </div>
+                            </div>
+                            <div id="show-entrevista"></div>
                         </div>
                     </div>
                 </div>
@@ -1419,6 +1513,12 @@
                         html += generarTablaAnexoVII(datos, inicio, fin);
                     } else if (anexoNumber === 8) {
                         html += generarTablaAnexoVIII(datos, inicio, fin);
+                    } else if (anexoNumber === 9) {
+                        html += generarTablaAnexoIX(datos, inicio, fin);
+                    } else if (anexoNumber === 10) {
+                        html += generarTablaAnexoX(datos, inicio, fin);
+                    } else if (anexoNumber === 11) {
+                        html += generarTablaAnexoXI(datos, inicio, fin);
                     } else {
                         html += generarTablaBasica(datos, inicio, fin);
                     }
@@ -1632,6 +1732,92 @@
             return html + '</tbody></table><br>';
         }
 
+        // Función para generar tabla del Anexo IX (PGI - 5 columnas)
+        function generarTablaAnexoIX(datos, inicio, fin) {
+            let html = `<table>
+                <thead>
+                    <tr><th colspan="5">${datos[inicio].id_puesto}:: ${datos[inicio].denominacion}</th></tr>
+                    <tr>
+                        <th>Apellido</th>
+                        <th>Nombre</th>
+                        <th>CUIL</th>
+                        <th>Pseudónimo</th>
+                        <th>Puntaje</th>
+                    </tr>
+                </thead>
+                <tbody>`;
+
+            for (let i = inicio; i < fin; i++) {
+                html += `<tr>
+                    <td>${datos[i].apellido || ''}</td>
+                    <td>${datos[i].nombre || ''}</td>
+                    <td>${datos[i].cuil || ''}</td>
+                    <td>${datos[i].pseudonimo_pgi || ''}</td>
+                    <td>${datos[i].puntaje_pgi || ''}</td>
+                </tr>`;
+            }
+
+            return html + '</tbody></table><br>';
+        }
+
+        // Función para generar tabla del Anexo X (Total - 7 columnas)
+        function generarTablaAnexoX(datos, inicio, fin) {
+            let html = `<table>
+                <thead>
+                    <tr><th colspan="7">${datos[inicio].id_puesto}:: ${datos[inicio].denominacion}</th></tr>
+                    <tr>
+                        <th>Apellido</th>
+                        <th>Nombre</th>
+                        <th>CUIL</th>
+                        <th>Puntaje de la Entrevista</th>
+                        <th>Puntaje del PGI</th>
+                        <th>Promedio</th>
+                        <th>Puntaje Ponderado</th>
+                    </tr>
+                </thead>
+                <tbody>`;
+
+            for (let i = inicio; i < fin; i++) {
+                html += `<tr>
+                    <td>${datos[i].apellido || ''}</td>
+                    <td>${datos[i].nombre || ''}</td>
+                    <td>${datos[i].cuil || ''}</td>
+                    <td>${datos[i].puntaje_entrevista || ''}</td>
+                    <td>${datos[i].puntaje_pgi || ''}</td>
+                    <td>${datos[i].promedio || ''}</td>
+                    <td>${datos[i].ponderado || ''}</td>
+                </tr>`;
+            }
+
+            return html + '</tbody></table><br>';
+        }
+
+        // Función para generar tabla del Anexo XI (Entrevista - 4 columnas)
+        function generarTablaAnexoXI(datos, inicio, fin) {
+            let html = `<table>
+                <thead>
+                    <tr><th colspan="4">${datos[inicio].id_puesto}:: ${datos[inicio].denominacion}</th></tr>
+                    <tr>
+                        <th>Apellido</th>
+                        <th>Nombre</th>
+                        <th>CUIL</th>
+                        <th>Puntaje</th>
+                    </tr>
+                </thead>
+                <tbody>`;
+
+            for (let i = inicio; i < fin; i++) {
+                html += `<tr>
+                    <td>${datos[i].apellido || ''}</td>
+                    <td>${datos[i].nombre || ''}</td>
+                    <td>${datos[i].cuil || ''}</td>
+                    <td>${datos[i].puntaje_entrevista || ''}</td>
+                </tr>`;
+            }
+
+            return html + '</tbody></table><br>';
+        }
+
         // Funciones simplificadas para generar cada anexo
         function generarAnexoI() {
             generarAnexo(1, 'Anexo-I', 'show-total', 'loadingAnexoI', 'totalCounter');
@@ -1664,6 +1850,21 @@
         function generarAnexoVIII() {
             console.log('🚀 Iniciando generación de Anexo VIII...');
             generarAnexo(8, 'Ausentes', 'show-ausentes', 'loadingAnexoVIII', 'ausentesCounter');
+        }
+
+        function generarAnexoIX() {
+            console.log('🚀 Iniciando generación de Anexo IX...');
+            generarAnexo(9, 'Anexo-Entrevista', 'show-pgi', 'loadingAnexoIX', 'pgiCounter');
+        }
+
+        function generarAnexoX() {
+            console.log('🚀 Iniciando generación de Anexo X...');
+            generarAnexo(10, 'Anexo-Entrevista', 'show-total-entrevista', 'loadingAnexoX', 'totalEntrevistaCounter');
+        }
+
+        function generarAnexoXI() {
+            console.log('🚀 Iniciando generación de Anexo XI...');
+            generarAnexo(11, 'Anexo-Entrevista', 'show-entrevista', 'loadingAnexoXI', 'entrevistaCounter');
         }        // Event listeners optimizados
         document.addEventListener('DOMContentLoaded', function () {
             console.log('🚀 DOM cargado, inicializando aplicación...');
@@ -1673,10 +1874,10 @@
 
             // Verificar que todos los elementos existan
             const elementos = [
-                'anexo-i', 'anexo-ii', 'anexo-iii', 'anexo-iv', 'anexo-v', 'anexo-vi', 'anexo-vii', 'anexo-viii',
-                'show-total', 'show-admitidos', 'show-excluidos', 'show-cyl1', 'show-cyl2', 'show-sustantiva', 'show-sustantiva-identificacion', 'show-ausentes',
-                'loadingAnexoI', 'loadingAnexoII', 'loadingAnexoIII', 'loadingAnexoIV', 'loadingAnexoV', 'loadingAnexoVI', 'loadingAnexoVII', 'loadingAnexoVIII',
-                'totalCounter', 'admitidosCounter', 'excluidosCounter', 'cyLCounter1', 'cyLCounter2', 'sustantivaCounter', 'sustantivaIdentificacionCounter', 'ausentesCounter'
+                'anexo-i', 'anexo-ii', 'anexo-iii', 'anexo-iv', 'anexo-v', 'anexo-vi', 'anexo-vii', 'anexo-viii', 'anexo-ix', 'anexo-x', 'anexo-xi',
+                'show-total', 'show-admitidos', 'show-excluidos', 'show-cyl1', 'show-cyl2', 'show-sustantiva', 'show-sustantiva-identificacion', 'show-ausentes', 'show-pgi', 'show-total-entrevista', 'show-entrevista',
+                'loadingAnexoI', 'loadingAnexoII', 'loadingAnexoIII', 'loadingAnexoIV', 'loadingAnexoV', 'loadingAnexoVI', 'loadingAnexoVII', 'loadingAnexoVIII', 'loadingAnexoIX', 'loadingAnexoX', 'loadingAnexoXI',
+                'totalCounter', 'admitidosCounter', 'excluidosCounter', 'cyLCounter1', 'cyLCounter2', 'sustantivaCounter', 'sustantivaIdentificacionCounter', 'ausentesCounter', 'pgiCounter', 'totalEntrevistaCounter', 'entrevistaCounter'
             ];
 
             elementos.forEach(id => {
@@ -1734,6 +1935,18 @@
                     }),
                     new Promise(resolve => {
                         generarAnexoVIII();
+                        setTimeout(resolve, 100);
+                    }),
+                    new Promise(resolve => {
+                        generarAnexoIX();
+                        setTimeout(resolve, 100);
+                    }),
+                    new Promise(resolve => {
+                        generarAnexoX();
+                        setTimeout(resolve, 100);
+                    }),
+                    new Promise(resolve => {
+                        generarAnexoXI();
                         setTimeout(resolve, 100);
                     })
                 ]).finally(() => {
