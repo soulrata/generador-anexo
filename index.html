@@ -789,6 +789,21 @@
                     <i class="fas fa-comments me-2"></i>Anexo XI
                 </button>
             </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="anexo-xii-tab" data-target="#anexo-xii" type="button">
+                    <i class="fas fa-clipboard-check me-2"></i>Anexo XII
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="anexo-xiii-tab" data-target="#anexo-xiii" type="button">
+                    <i class="fas fa-sort-numeric-down me-2"></i>Anexo XIII
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="anexo-xiv-tab" data-target="#anexo-xiv" type="button">
+                    <i class="fas fa-podium me-2"></i>Anexo XIV
+                </button>
+            </li>
         </ul>
 
         <div class="tab-content" id="anexoTabContent">
@@ -1085,6 +1100,86 @@
                     </div>
                 </div>
             </div>
+            <!-- Anexo XII -->
+            <div class="tab-pane fade" id="anexo-xii" role="tabpanel">
+                <div class="anexo-card">
+                    <div class="anexo-header">
+                        <h2 class="mb-0"><i class="fas fa-clipboard-check me-2"></i>Anexo XII</h2>
+                        <button class="btn-anexo" onclick="copyToClipboard('miContenidoAnexoXII')">
+                            <i class="far fa-copy"></i> Copiar Contenido
+                        </button>
+                    </div>
+                    <div class="anexo-content">
+                        <h3 class="text-center mb-4">
+                            Competencias: <span class="counter-badge" id="competenciasCounter">0</span>
+                        </h3>
+                        <div id="miContenidoAnexoXII">
+                            <p class="anexo-subtitle" style="text-align: right;"><b>ANEXO XII</b></p>
+                            <h4 class="anexo-title" style="text-align: center;">Nómina de Calificaciones de Evaluación de Competencias</h4>
+                            <div class="loading" id="loadingAnexoXII">
+                                <div class="spinner-border" role="status">
+                                    <span class="visually-hidden">Cargando...</span>
+                                </div>
+                            </div>
+                            <div id="show-competencias"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Anexo XIII -->
+            <div class="tab-pane fade" id="anexo-xiii" role="tabpanel">
+                <div class="anexo-card">
+                    <div class="anexo-header">
+                        <h2 class="mb-0"><i class="fas fa-sort-numeric-down me-2"></i>Anexo XIII</h2>
+                        <button class="btn-anexo" onclick="copyToClipboard('miContenidoAnexoXIII')">
+                            <i class="far fa-copy"></i> Copiar Contenido
+                        </button>
+                    </div>
+                    <div class="anexo-content">
+                        <h3 class="text-center mb-4">
+                            Orden de Mérito: <span class="counter-badge" id="ordenMeritoCounter">0</span>
+                        </h3>
+                        <div id="miContenidoAnexoXIII">
+                            <p class="anexo-subtitle" style="text-align: right;"><b>ANEXO XIII</b></p>
+                            <h4 class="anexo-title" style="text-align: center;">Orden de Mérito</h4>
+                            <div class="loading" id="loadingAnexoXIII">
+                                <div class="spinner-border" role="status">
+                                    <span class="visually-hidden">Cargando...</span>
+                                </div>
+                            </div>
+                            <div id="show-orden-merito"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Anexo XIV -->
+            <div class="tab-pane fade" id="anexo-xiv" role="tabpanel">
+                <div class="anexo-card">
+                    <div class="anexo-header">
+                        <h2 class="mb-0"><i class="fas fa-podium me-2"></i>Anexo XIV</h2>
+                        <button class="btn-anexo" onclick="copyToClipboard('miContenidoAnexoXIV')">
+                            <i class="far fa-copy"></i> Copiar Contenido
+                        </button>
+                    </div>
+                    <div class="anexo-content">
+                        <h3 class="text-center mb-4">
+                            Ternas: <span class="counter-badge" id="ternasCounter">0</span>
+                        </h3>
+                        <div id="miContenidoAnexoXIV">
+                            <p class="anexo-subtitle" style="text-align: right;"><b>ANEXO XIV</b></p>
+                            <h4 class="anexo-title" style="text-align: center;">Ternas</h4>
+                            <div class="loading" id="loadingAnexoXIV">
+                                <div class="spinner-border" role="status">
+                                    <span class="visually-hidden">Cargando...</span>
+                                </div>
+                            </div>
+                            <div id="show-ternas"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -1359,7 +1454,13 @@
                 const actual = datos[i];
                 const siguiente = datos[i + 1];
 
-                if (actual.denominacion === siguiente.denominacion && actual.nivel === siguiente.nivel) {
+                // Para hojas OM usar ID_PUESTO y DENOMINACION (mayúsculas)
+                const actualDenom = actual.DENOMINACION || actual.denominacion;
+                const actualNivel = actual.nivel || actual.ID_PUESTO;
+                const siguienteDenom = siguiente.DENOMINACION || siguiente.denominacion;
+                const siguienteNivel = siguiente.nivel || siguiente.ID_PUESTO;
+
+                if (actualDenom === siguienteDenom && actualNivel === siguienteNivel) {
                     mismo++;
                 } else {
                     limite.push(mismo);
@@ -1519,6 +1620,14 @@
                         html += generarTablaAnexoX(datos, inicio, fin);
                     } else if (anexoNumber === 11) {
                         html += generarTablaAnexoXI(datos, inicio, fin);
+                    } else if (anexoNumber === 12) {
+                        html += generarTablaAnexoXII(datos, inicio, fin);
+                    } else if (anexoNumber === 13) {
+                        html += generarTablaAnexoXIII(datos, inicio, fin);
+                    } else if (anexoNumber === 14) {
+                        html += generarTablaAnexoXIV(datos, inicio, fin);
+                        // Para Anexo XIV contar solo ternas (3 por puesto)
+                        total = limite.length * 3;
                     } else {
                         html += generarTablaBasica(datos, inicio, fin);
                     }
@@ -1818,6 +1927,94 @@
             return html + '</tbody></table><br>';
         }
 
+        // Función para generar tabla del Anexo XII (Competencias - 5 columnas)
+        function generarTablaAnexoXII(datos, inicio, fin) {
+            let html = `<table>
+                <thead>
+                    <tr><th colspan="5">${datos[inicio].ID_PUESTO}:: ${datos[inicio].DENOMINACION}</th></tr>
+                    <tr>
+                        <th>Apellido</th>
+                        <th>Nombre</th>
+                        <th>CUIL</th>
+                        <th>Calificación</th>
+                        <th>Coeficiente</th>
+                    </tr>
+                </thead>
+                <tbody>`;
+
+            for (let i = inicio; i < fin; i++) {
+                html += `<tr>
+                    <td>${datos[i].Apellido || ''}</td>
+                    <td>${datos[i].Nombre || ''}</td>
+                    <td>${datos[i].CUIL || ''}</td>
+                    <td>${datos[i].Comp_calif || ''}</td>
+                    <td>${datos[i].Coeficiente || ''}</td>
+                </tr>`;
+            }
+
+            return html + '</tbody></table><br>';
+        }
+
+        // Función para generar tabla del Anexo XIII (Orden de Mérito - 7 columnas)
+        function generarTablaAnexoXIII(datos, inicio, fin) {
+            let html = `<table>
+                <thead>
+                    <tr><th colspan="7">${datos[inicio].ID_PUESTO}:: ${datos[inicio].DENOMINACION}</th></tr>
+                    <tr>
+                        <th>Apellido y Nombre</th>
+                        <th>CUIL</th>
+                        <th>Ponderado de la Ev. de Antecedentes Cu. y Lab. (30%)</th>
+                        <th>Ponderado de la Ev. Técnica Sustantiva (50%)</th>
+                        <th>Ponderado de la Ev. med. Entrevista Lab. y PGI (20%)</th>
+                        <th>Coeficiente</th>
+                        <th>Puntaje Final</th>
+                    </tr>
+                </thead>
+                <tbody>`;
+
+            for (let i = inicio; i < fin; i++) {
+                const apellidoNombre = `${datos[i].Apellido || ''} ${datos[i].Nombre || ''}`.trim();
+                html += `<tr>
+                    <td>${apellidoNombre}</td>
+                    <td>${datos[i].CUIL || ''}</td>
+                    <td>${datos[i].Ponderado_30 || ''}</td>
+                    <td>${datos[i].Ponderado_50 || ''}</td>
+                    <td>${datos[i].Ponderado_20 || ''}</td>
+                    <td>${datos[i].Coeficiente || ''}</td>
+                    <td>${datos[i].OM || ''}</td>
+                </tr>`;
+            }
+
+            return html + '</tbody></table><br>';
+        }
+
+        // Función para generar tabla del Anexo XIV (Ternas - 3 columnas, solo 3 primeros)
+        function generarTablaAnexoXIV(datos, inicio, fin) {
+            // Limitar a solo los primeros 3 registros por grupo
+            const finLimitado = Math.min(inicio + 3, fin);
+            
+            let html = `<table>
+                <thead>
+                    <tr><th colspan="3">${datos[inicio].ID_PUESTO}:: ${datos[inicio].DENOMINACION}</th></tr>
+                    <tr>
+                        <th>Apellido</th>
+                        <th>Nombre</th>
+                        <th>CUIL</th>
+                    </tr>
+                </thead>
+                <tbody>`;
+
+            for (let i = inicio; i < finLimitado; i++) {
+                html += `<tr>
+                    <td>${datos[i].Apellido || ''}</td>
+                    <td>${datos[i].Nombre || ''}</td>
+                    <td>${datos[i].CUIL || ''}</td>
+                </tr>`;
+            }
+
+            return html + '</tbody></table><br>';
+        }
+
         // Funciones simplificadas para generar cada anexo
         function generarAnexoI() {
             generarAnexo(1, 'Anexo-I', 'show-total', 'loadingAnexoI', 'totalCounter');
@@ -1865,6 +2062,21 @@
         function generarAnexoXI() {
             console.log('🚀 Iniciando generación de Anexo XI...');
             generarAnexo(11, 'Anexo-Entrevista', 'show-entrevista', 'loadingAnexoXI', 'entrevistaCounter');
+        }
+
+        function generarAnexoXII() {
+            console.log('🚀 Iniciando generación de Anexo XII...');
+            generarAnexo(12, 'OM', 'show-competencias', 'loadingAnexoXII', 'competenciasCounter');
+        }
+
+        function generarAnexoXIII() {
+            console.log('🚀 Iniciando generación de Anexo XIII...');
+            generarAnexo(13, 'OM', 'show-orden-merito', 'loadingAnexoXIII', 'ordenMeritoCounter');
+        }
+
+        function generarAnexoXIV() {
+            console.log('🚀 Iniciando generación de Anexo XIV...');
+            generarAnexo(14, 'OM', 'show-ternas', 'loadingAnexoXIV', 'ternasCounter');
         }        // Event listeners optimizados
         document.addEventListener('DOMContentLoaded', function () {
             console.log('🚀 DOM cargado, inicializando aplicación...');
@@ -1874,10 +2086,10 @@
 
             // Verificar que todos los elementos existan
             const elementos = [
-                'anexo-i', 'anexo-ii', 'anexo-iii', 'anexo-iv', 'anexo-v', 'anexo-vi', 'anexo-vii', 'anexo-viii', 'anexo-ix', 'anexo-x', 'anexo-xi',
-                'show-total', 'show-admitidos', 'show-excluidos', 'show-cyl1', 'show-cyl2', 'show-sustantiva', 'show-sustantiva-identificacion', 'show-ausentes', 'show-pgi', 'show-total-entrevista', 'show-entrevista',
-                'loadingAnexoI', 'loadingAnexoII', 'loadingAnexoIII', 'loadingAnexoIV', 'loadingAnexoV', 'loadingAnexoVI', 'loadingAnexoVII', 'loadingAnexoVIII', 'loadingAnexoIX', 'loadingAnexoX', 'loadingAnexoXI',
-                'totalCounter', 'admitidosCounter', 'excluidosCounter', 'cyLCounter1', 'cyLCounter2', 'sustantivaCounter', 'sustantivaIdentificacionCounter', 'ausentesCounter', 'pgiCounter', 'totalEntrevistaCounter', 'entrevistaCounter'
+                'anexo-i', 'anexo-ii', 'anexo-iii', 'anexo-iv', 'anexo-v', 'anexo-vi', 'anexo-vii', 'anexo-viii', 'anexo-ix', 'anexo-x', 'anexo-xi', 'anexo-xii', 'anexo-xiii', 'anexo-xiv',
+                'show-total', 'show-admitidos', 'show-excluidos', 'show-cyl1', 'show-cyl2', 'show-sustantiva', 'show-sustantiva-identificacion', 'show-ausentes', 'show-pgi', 'show-total-entrevista', 'show-entrevista', 'show-competencias', 'show-orden-merito', 'show-ternas',
+                'loadingAnexoI', 'loadingAnexoII', 'loadingAnexoIII', 'loadingAnexoIV', 'loadingAnexoV', 'loadingAnexoVI', 'loadingAnexoVII', 'loadingAnexoVIII', 'loadingAnexoIX', 'loadingAnexoX', 'loadingAnexoXI', 'loadingAnexoXII', 'loadingAnexoXIII', 'loadingAnexoXIV',
+                'totalCounter', 'admitidosCounter', 'excluidosCounter', 'cyLCounter1', 'cyLCounter2', 'sustantivaCounter', 'sustantivaIdentificacionCounter', 'ausentesCounter', 'pgiCounter', 'totalEntrevistaCounter', 'entrevistaCounter', 'competenciasCounter', 'ordenMeritoCounter', 'ternasCounter'
             ];
 
             elementos.forEach(id => {
@@ -1947,6 +2159,18 @@
                     }),
                     new Promise(resolve => {
                         generarAnexoXI();
+                        setTimeout(resolve, 100);
+                    }),
+                    new Promise(resolve => {
+                        generarAnexoXII();
+                        setTimeout(resolve, 100);
+                    }),
+                    new Promise(resolve => {
+                        generarAnexoXIII();
+                        setTimeout(resolve, 100);
+                    }),
+                    new Promise(resolve => {
+                        generarAnexoXIV();
                         setTimeout(resolve, 100);
                     })
                 ]).finally(() => {
